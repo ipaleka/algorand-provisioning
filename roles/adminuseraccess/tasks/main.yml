@@ -1,0 +1,7 @@
+---
+- name: check if admin_user can ssh into the system
+  ignore_errors: true
+  local_action: shell ./scripts/verify_user_ssh_connection.sh {{ admin_user }} {{ inventory_hostname }}
+  register: admin_user_can_ssh
+  changed_when: false
+  tags: checkadminuser

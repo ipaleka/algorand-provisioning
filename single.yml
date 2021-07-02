@@ -1,0 +1,29 @@
+---
+- name: retrieve OS data
+  hosts: all
+  remote_user: root
+  roles:
+     - role: distrofacts
+
+- name: check if admin_user exists
+  hosts: all:!windows:!macos
+  remote_user: "{{ admin_user }}"
+  gather_facts: false
+  ignore_errors: true
+  roles:
+     - role: adminuseraccess
+
+- name: create admin_user
+  hosts: all:!windows:!macos
+  remote_user: root
+  gather_facts: false
+  roles:
+    - role: createuser
+      when: admin_user_can_ssh is failure
+
+- name: single machine provisioning for Algorand
+  hosts: all
+  remote_user: root
+  roles:
+    - role: algorand_deb
+      when: os_family == "Debian"
