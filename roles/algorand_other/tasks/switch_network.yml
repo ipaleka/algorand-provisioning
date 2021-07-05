@@ -1,0 +1,40 @@
+---
+- name: copy {{ algorand_network }} genesis file to data directory
+  copy:
+    src: "/var/lib/algorand/genesis/{{ algorand_network }}/genesis.json"
+    dest: "/var/lib/algorand/genesis.json"
+    remote_src: yes
+    owner: algorand
+    group: algorand
+    mode: 0644
+  register: algorand_network_switched
+  tags: algorand-node-switch-network
+
+- name: restart Algorand service
+  systemd:
+    name: algorand
+    state: restarted
+  when: algorand_network_switched.changed
+  tags: algorand-node-switch-network
+
+- name: ensure Algorand service is in a running state
+  service:
+    name: algorand
+    state: started
+  register: algorand_service_active
+  until: algorand_service_active.status.ActiveState == "active"
+  retries: 5
+  delay: 5
+  tags: algorand-node-switch-network
+
+- name: wait until the file /var/lib/algorand/algod.net is present
+  wait_for:
+    path: /var/lib/algorand/algod.net
+  tags: algorand-node-switch-network
+
+- name: ensure Algorand runs in {{ algorand_network }}
+  command: goal node status -d /var/lib/algorand
+  register: algorand_node_status
+  failed_when: 'algorand_network|string not in algorand_node_status.stdout'
+  changed_when: false
+  tags: algorand-node-switch-network

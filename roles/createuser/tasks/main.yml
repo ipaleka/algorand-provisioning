@@ -1,7 +1,15 @@
 ---
+
+- name: ensure group for admin_user exists
+  group:
+    name: "{{ admin_user }}"
+    state: present
+  tags: createuser
+
 - name: create admin_user
   user:
     name: "{{ admin_user }}"
+    group: "{{ admin_user }}"
     state: present
     createhome: yes
     shell: /bin/bash

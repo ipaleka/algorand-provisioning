@@ -1,0 +1,4 @@
+---
+- include: install.yml
+# - include: switch_network.yml
+#   when: algorand_network != "mainnet"

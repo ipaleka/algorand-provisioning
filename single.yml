@@ -19,3 +19,5 @@
       when: os_family == "Debian"
     - role: algorand_rpm
       when: os_family == "RedHat"
+    - role: algorand_other
+      when: os_family not in ("Debian", "RedHat")
