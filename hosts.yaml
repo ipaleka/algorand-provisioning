@@ -1,0 +1,38 @@
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  children:
+    fedora:
+      hosts:
+        192.168.1.80:
+    debian:
+      hosts:
+        192.168.1.81:
+    ubuntu:
+      hosts:
+        192.168.1.82:
+    opensuse:
+      hosts:
+        192.168.1.83:
+    macos:
+      hosts:
+        192.168.1.84:
+      vars:
+        ansible_user: pythonista
+    windows:
+      hosts:
+        192.168.1.85:
+      vars:
+        ansible_user: pythonista
+        ansible_connection: ssh
+        ansible_shell_type: cmd
+    manjaro:
+      hosts:
+        192.168.1.86:
+    linux:
+      hosts:
+        192.168.1.80:
+        192.168.1.81:
+        192.168.1.82:
+        192.168.1.83:
+        192.168.1.86:
