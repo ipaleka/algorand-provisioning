@@ -3,7 +3,10 @@
 project_name: algorand-provisioning
 admin_user: pythonista
 admin_email: pythonista@example.com
+
+use_package_manager: false
 node_directory: "/home/{{ admin_user }}/node"
+algorand_service: "system"  # user
 
 install_algorand_devtools: false
 algorand_network: "testnet"

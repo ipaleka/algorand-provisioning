@@ -16,8 +16,8 @@
   remote_user: root
   roles:
     - role: algorand_deb
-      when: os_family == "Debian"
+      when: use_package_manager and os_family == "Debian"
     - role: algorand_rpm
-      when: os_family == "RedHat"
+      when: use_package_manager and os_family == "RedHat"
     - role: algorand_other
-      when: os_family not in ("Debian", "RedHat")
+      when: not use_package_manager or os_family not in ("Debian", "RedHat")

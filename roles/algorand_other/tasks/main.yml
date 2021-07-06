@@ -1,4 +1,10 @@
 ---
+- include: pre_install.yml
 - include: install.yml
+- include: post_install.yml
+- include: system_service.yml
+  when: algorand_service == "system"
+# - include: user_service.yml
+#   when: algorand_service == "user"
 # - include: switch_network.yml
 #   when: algorand_network != "mainnet"

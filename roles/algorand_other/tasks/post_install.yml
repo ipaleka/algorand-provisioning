@@ -1,0 +1,35 @@
+---
+- name: add Algorand environment variables exporting to user's .bashrc
+  lineinfile:
+    dest: "/home/{{ admin_user }}/.bashrc"
+    line: "{{ item }}"
+    state: present
+  become: yes
+  become_user: "{{ admin_user }}"
+  with_items:
+    - 'export ALGORAND_DATA="{{ node_directory }}/data"'
+    - 'export PATH="{{ node_directory }}:$PATH"'
+  tags: algorand-node-setup
+
+- name: change systemd service directory in systemd-setup for openSUSE
+  replace:
+    path: "{{ node_directory }}/systemd-setup.sh"
+    regexp: "/lib/systemd/system/algorand@.service"
+    replace: "/usr/lib/systemd/system/algorand@.service"
+  become: yes
+  become_user: "{{ admin_user }}"
+  when: os_family == "Suse"
+  tags: algorand-node-setup
+
+- name: remove sed command for sudoers from systemd-setup for Debian
+  replace:
+    path: "{{ node_directory }}/systemd-setup.sh"
+    regexp: "{{ item.from }}"
+    replace: "{{ item.to }}"
+  with_items:
+    - { from: '^    sed \$\{sedargs\} "\$\{SCRIPTPATH\}/sudoers.template"', to: '    # sed ${sedargs} "${SCRIPTPATH}/sudoers.template"' }
+    - { from: '        > /etc/sudoers.d/99-algo-systemctl', to: '    #    > /etc/sudoers.d/99-algo-systemctl' }
+  become: yes
+  become_user: "{{ admin_user }}"
+  when: os_distribution == "Debian"
+  tags: algorand-node-setup

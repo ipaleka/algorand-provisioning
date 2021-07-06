@@ -1,0 +1,25 @@
+---
+- name: check if admin user's node directory exists
+  file:
+    path: "{{ node_directory }}"
+    state: directory
+    mode: 0755
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user }}"
+  tags: algorand-node-setup
+
+- name: check if Ansible temporary user directory exists
+  file:
+    path: "/home/{{ admin_user }}/.ansible/tmp"
+    state: directory
+    mode: 0700
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user }}"
+  tags: algorand-node-setup
+
+- name: install dependencies for Debian
+  apt:
+    name: curl
+    state: present
+  when: os_distribution == "Debian"
+  tags: algorand-node-dependencies
