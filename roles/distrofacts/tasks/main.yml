@@ -2,12 +2,8 @@
 # - name: base
 #   ansible.builtin.debug:
 #     msg:
-#     - "{{ hostvars[inventory_hostname] }}"
-#   tags: distrofacts
-
-# - name: base
-#   ansible.builtin.debug:
-#     msg:
+#     - "{{ hostvars[inventory_hostname].ansible_distribution }}"
+#     - "{{ hostvars[inventory_hostname].ansible_distribution_version }}"
 #     - "{{ hostvars[inventory_hostname].ansible_os_family }}"
 #   tags: distrofacts
 
@@ -17,8 +13,7 @@
     os_distribution: "{{ hostvars[inventory_hostname].ansible_distribution }}"
   tags: distrofacts
 
-
-# ansible_distribution () ansible_os_family
+# ansible_distribution (ansible_distribution_version) ansible_os_family
 
 # Fedora (34) RedHat
 # Debian (10) Debian
@@ -27,3 +22,5 @@
 # MacOSX (10.15.7) Darwin
 # Microsoft Windows 10 Pro (10.0.19042.0) Windows
 # Archlinux (21.0.7) Archlinux
+# Rocky (8.4) RedHat
+# AlmaLinux (8.4) RedHat
