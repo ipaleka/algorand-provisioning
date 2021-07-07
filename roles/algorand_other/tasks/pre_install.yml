@@ -5,16 +5,16 @@
     state: directory
     mode: 0755
     owner: "{{ admin_user }}"
-    group: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
   tags: algorand-node-setup
 
 - name: check if Ansible temporary user directory exists
   file:
-    path: "/home/{{ admin_user }}/.ansible/tmp"
+    path: "{{ admin_home_directory }}/.ansible/tmp"
     state: directory
     mode: 0700
     owner: "{{ admin_user }}"
-    group: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
   tags: algorand-node-setup
 
 - name: install dependencies for Debian

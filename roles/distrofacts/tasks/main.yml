@@ -13,6 +13,26 @@
     os_distribution: "{{ hostvars[inventory_hostname].ansible_distribution }}"
   tags: distrofacts
 
+# - name: set node directory variable for Linux systems
+#   set_fact:
+#     node_directory: "/Users/{{ admin_user }}/node"
+#   when: os_family not in ("Darwin", "Windows")
+#   tags: distrofacts
+
+- name: set specific Mac OS system variables
+  set_fact:
+    admin_home_directory: "/Users/{{ admin_user }}"
+    admin_user_group: staff
+  when: os_family == "Darwin"
+  tags: distrofacts
+
+# - name: set specific Windows system variables
+#   set_fact:
+#     admin_home_directory: "C:\\\\Users\\{{ admin_user }}"
+#     admin_user_group:
+#   when: os_family == "Windows"
+#   tags: distrofacts
+
 # ansible_distribution (ansible_distribution_version) ansible_os_family
 
 # Fedora (34) RedHat

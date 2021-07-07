@@ -4,7 +4,7 @@
     url: https://raw.githubusercontent.com/algorand/go-algorand-doc/master/downloads/installers/update.sh
     dest: "{{ node_directory }}/update_by_ansible.sh"
     owner: "{{ admin_user }}"
-    group: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
     mode: 0755
   register: updater_downloaded
   tags: algorand-node-setup
@@ -15,7 +15,7 @@
     dest: "{{ node_directory }}/update.sh"
     remote_src: yes
     owner: "{{ admin_user }}"
-    group: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
     mode: 0755
   when: updater_downloaded.changed
   register: updater_file
