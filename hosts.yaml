@@ -20,12 +20,12 @@ all:
       hosts:
         192.168.1.84:
       vars:
-        ansible_user: pythonista
+        ansible_user: algonaut
     windows:
       hosts:
         192.168.1.85:
       vars:
-        ansible_user: pythonista
+        ansible_user: algonaut
         ansible_connection: ssh
         ansible_shell_type: cmd
     manjaro:

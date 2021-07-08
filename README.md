@@ -29,13 +29,13 @@ To avoid asking for password during the provision process, you can run your play
 ansible-playbook -i hosts.yaml setup.yml --ask-become-pass
 ```
 
-The other option is to set that your user (*pythonista* in this example) can run sudo commands without providing the password. You may do that by issuing the following command:
+The other option is to set that your user (*algonaut* in this example) can run sudo commands without providing the password. You may do that by issuing the following command:
 
 ```bash
-sudo visudo -f /private/etc/sudoers.d/pythonista
+sudo visudo -f /private/etc/sudoers.d/algonaut
 ```
 
-Then add the line `pythonista ALL=(ALL) NOPASSWD: ALL`. Write that content to the file by entering `!:wq` on your keyboard.
+Then add the line `algonaut ALL=(ALL) NOPASSWD: ALL`. Write that content to the file by entering `!:wq` on your keyboard.
 
 
 # Provisioning
@@ -55,12 +55,12 @@ ansible-playbook -i hosts.yaml -l ubuntu,macos setup.yml
 
 ## Localhost system provisioning
 
-Issue the following command in order to provision your local machine (change `pythonista` to your username on the local machine):
+Issue the following command in order to provision your local machine (change `algonaut` to your username on the local machine):
 
 ```bash
 ansible-playbook --connection=local \
 --inventory 127.0.0.1, --limit 127.0.0.1 \
--e admin_user=pythonista -e admin_user_group=pythonista \
+-e admin_user=algonaut -e admin_user_group=algonaut \
 -i hosts.yaml setup.yml --ask-become-pass
 ```
 
@@ -70,11 +70,11 @@ You may also need to add `-e ansible_become_method=su` to that command if your l
 # Uninstalling
 
 Remove the Algorand installation with the following commands
-(it's implied your Algorand node has been installed in `/home/pythonista/node` directory):
+(it's implied your Algorand node has been installed in `/home/algonaut/node` directory):
 
 ```bash
-$ sudo systemctl disable algorand@$(systemd-escape /home/pythonista/node/data)
-$ sudo systemctl stop algorand@$(systemd-escape /home/pythonista/node/data)
+$ sudo systemctl disable algorand@$(systemd-escape /home/algonaut/node/data)
+$ sudo systemctl stop algorand@$(systemd-escape /home/algonaut/node/data)
 $ sudo rm /lib/systemd/system/algorand@.service
-rm -r /home/pythonista/node/
+rm -r /home/algonaut/node/
 ```
