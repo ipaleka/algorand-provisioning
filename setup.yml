@@ -17,8 +17,8 @@
   roles:
     - role: install_deb
       when: use_package_manager and os_family == "Debian"
-    - role: install_rpm
-      when: use_package_manager and os_family == "RedHat"
+    # - role: install_rpm
+    #   when: use_package_manager and os_family == "RedHat"
 
 - name: install and configure using updater script
   hosts: all:!windows
@@ -40,9 +40,16 @@
   roles:
     - role: install_win
 
+- name: switch network
+  hosts: all:!windows
+  remote_user: "{{ admin_user }}"
+  roles:
+    - role: switch_network
+      when: algorand_network != "mainnet"
+
 - name: fast node catchup
   hosts: all
-  remote_user: root
+  remote_user: "{{ admin_user }}"
   roles:
     - role: node_sync
       when: fast_catchup

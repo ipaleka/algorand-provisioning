@@ -10,4 +10,5 @@ node_directory: "{{ admin_home_directory }}/node"
 use_package_manager: false
 install_algorand_devtools: true
 algorand_network: "testnet"
+fast_catchup: true
 algorand_version: 2.7.1  # for retrieving Windows installation binary
