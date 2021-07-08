@@ -26,7 +26,7 @@ NETCONFIG_DNS_STATIC_SERVERS="8.8.8.8"
 To avoid asking for password during the provision process, you can run your playbook with `--ask-become-pass`:
 
 ```bash
-ansible-playbook -i hosts single.yml --ask-become-pass
+ansible-playbook -i hosts.yaml single.yml --ask-become-pass
 ```
 
 The other option is to set that your user (*pythonista* in this example) can run sudo commands without providing the password. You may do that by issuing the following command:
@@ -42,5 +42,31 @@ Then add the line `pythonista ALL=(ALL) NOPASSWD: ALL`. Write that content to th
 
 
 ```bash
-ansible-playbook -i hosts single.yml
+ansible-playbook -i hosts.yaml single.yml
+```
+
+## Localhost system provisioning
+
+Issue the following command in order to provision your local machine (change `pythonista` to your username on the local machine):
+
+```bash
+ansible-playbook --connection=local \
+--inventory 127.0.0.1, --limit 127.0.0.1 \
+-e admin_user=pythonista -e admin_user_group=pythonista \
+-i hosts.yaml single.yml --ask-become-pass
+```
+
+You may also need to add `-e ansible_become_method=su` to that command if your local machine's OS is Debian.
+
+
+# Uninstalling
+
+Remove the Algorand installation with the following commands
+(it's implied your Algorand node has been installed in `/home/pythonista/node` directory):
+
+```bash
+$ sudo systemctl disable algorand@$(systemd-escape /home/pythonista/node/data)
+$ sudo systemctl stop algorand@$(systemd-escape /home/pythonista/node/data)
+$ sudo rm /lib/systemd/system/algorand@.service
+rm -r /home/pythonista/node/
 ```
