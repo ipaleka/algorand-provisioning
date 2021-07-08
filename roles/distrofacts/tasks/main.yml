@@ -13,12 +13,6 @@
     os_distribution: "{{ hostvars[inventory_hostname].ansible_distribution }}"
   tags: distrofacts
 
-# - name: set node directory variable for Linux systems
-#   set_fact:
-#     node_directory: "/Users/{{ admin_user }}/node"
-#   when: os_family not in ("Darwin", "Windows")
-#   tags: distrofacts
-
 - name: set variables specific to Mac OS
   set_fact:
     admin_home_directory: "/Users/{{ admin_user }}"

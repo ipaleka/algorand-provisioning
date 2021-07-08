@@ -39,3 +39,10 @@
   remote_user: root
   roles:
     - role: install_win
+
+- name: fast node catchup
+  hosts: all
+  remote_user: root
+  roles:
+    - role: node_sync
+      when: fast_catchup
