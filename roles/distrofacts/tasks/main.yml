@@ -19,19 +19,18 @@
 #   when: os_family not in ("Darwin", "Windows")
 #   tags: distrofacts
 
-- name: set specific Mac OS system variables
+- name: set variables specific to Mac OS
   set_fact:
     admin_home_directory: "/Users/{{ admin_user }}"
     admin_user_group: staff
   when: os_family == "Darwin"
   tags: distrofacts
 
-# - name: set specific Windows system variables
-#   set_fact:
-#     admin_home_directory: "C:\\\\Users\\{{ admin_user }}"
-#     admin_user_group:
-#   when: os_family == "Windows"
-#   tags: distrofacts
+- name: set variables specific to MS Windows
+  set_fact:
+    admin_home_directory: "C:\\Users\\{{ admin_user }}"
+  when: os_family == "Windows"
+  tags: distrofacts
 
 # ansible_distribution (ansible_distribution_version) ansible_os_family
 

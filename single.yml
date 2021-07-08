@@ -12,7 +12,7 @@
     - role: createuser
 
 - name: install and configure using package manager
-  hosts: all
+  hosts: all:!windows:!macos
   remote_user: root
   roles:
     - role: install_deb
@@ -21,7 +21,7 @@
       when: use_package_manager and os_family == "RedHat"
 
 - name: install and configure using updater script
-  hosts: all
+  hosts: all:!windows
   remote_user: root
   vars:
     # use_updater: not use_package_manager or os_family not in ("Debian", "RedHat")
@@ -30,6 +30,12 @@
     - role: install_other
       when: use_updater
     - role: systemd_service
-      when: use_updater and os_family not in ("Darwin", "Windows")
+      when: use_updater and os_family != "Darwin"
     - role: launchd_daemon
       when: use_updater and os_family == "Darwin"
+
+- name: install and configure using installation binary
+  hosts: windows
+  remote_user: root
+  roles:
+    - role: install_win

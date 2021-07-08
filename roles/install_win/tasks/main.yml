@@ -1,0 +1,19 @@
+---
+- name: ensure that network is either mainnet or testnet
+  set_fact:
+    algorand_network: "testnet"
+  when: algorand_network != "mainnet"
+  tags: algorand-node-setup
+
+- name: download Windows installation binary
+  win_get_url:
+    url: "https://github.com/randlabs/algorand-windows-node/releases/download/v{{ algorand_version }}/AlgorandNode-{{ algorand_version }}-{{ algorand_network }}_amd64.msi"
+    dest: "{{ admin_home_directory }}\\AlgorandNode-{{ algorand_version }}-{{ algorand_network }}_amd64.msi"
+    force: no
+  tags: algorand-node-setup
+
+- name: install Algorand node
+  win_package:
+    path: "{{ admin_home_directory }}\\AlgorandNode-{{ algorand_version }}-{{ algorand_network }}_amd64.msi"
+    state: present
+  tags: algorand-node-setup
