@@ -11,14 +11,23 @@
   roles:
     - role: createuser
 
-- name: single machine provisioning for Algorand
+- name: install and configure using package manager
   hosts: all
   remote_user: root
   roles:
-    - role: algorand_deb
+    - role: install_deb
       when: use_package_manager and os_family == "Debian"
-    # - role: algorand_rpm
-    #   when: use_package_manager and os_family == "RedHat"
-    - role: algorand_other
-      # when: not use_package_manager or os_family not in ("Debian", "RedHat")
-      when: not use_package_manager or os_family not in ("Debian", )
+    - role: install_rpm
+      when: use_package_manager and os_family == "RedHat"
+
+- name: install and configure using updater script
+  hosts: all
+  remote_user: root
+  vars:
+    # use_updater: not use_package_manager or os_family not in ("Debian", "RedHat")
+    use_updater: not use_package_manager or os_family not in ("Debian", )
+  roles:
+    - role: install_other
+      when: use_updater
+    - role: setup_service
+      when: use_updater

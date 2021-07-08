@@ -1,0 +1,6 @@
+---
+- include: systemd_service.yml
+  when: algorand_service == "system"
+# - include: systemd_service_user.yml
+#   when: algorand_service == "user"
+
