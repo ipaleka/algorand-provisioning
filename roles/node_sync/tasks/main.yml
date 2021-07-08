@@ -19,6 +19,7 @@
 - name: set the latest checkpoint variable
   set_fact:
     latest_catchpoint: "{{ latest_catchpoint_file['content'] | b64decode | trim }}"
+  when: catchpoint_downloaded.changed
   tags: node-sync
 
 - name: catchup node using the latest checkpoint value

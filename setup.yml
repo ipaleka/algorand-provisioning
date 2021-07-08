@@ -53,3 +53,11 @@
   roles:
     - role: node_sync
       when: fast_catchup
+
+- name: setup node updating
+  hosts: all:!windows
+  remote_user: "{{ admin_user }}"
+  roles:
+    - role: update_setup
+      # when: not use_package_manager or os_family not in ("Debian", "RedHat")
+      when: not use_package_manager or os_family not in ("Debian", )

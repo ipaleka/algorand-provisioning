@@ -53,7 +53,7 @@ To limit provisioning only to some hosts:
 ansible-playbook -i hosts.yaml -l ubuntu,macos setup.yml
 ```
 
-## Localhost system provisioning
+## Local machine provisioning
 
 Issue the following command in order to provision your local machine (change `algonaut` to your username on the local machine):
 
