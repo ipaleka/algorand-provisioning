@@ -1,0 +1,17 @@
+---
+- name: install Algorand daemon script
+  template:
+    src: org.algorand.daemon.plist.j2
+    dest: /Library/LaunchDaemons/org.algorand.daemon.plist
+    owner: root
+    group: wheel
+    mode: 0644
+  become: yes
+  tags: algorand-service
+
+- name: start Algorand node
+  community.general.launchd:
+    name: org.algorand.daemon
+    state: started
+  become: yes
+  tags: algorand-service

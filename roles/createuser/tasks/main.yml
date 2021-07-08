@@ -14,14 +14,14 @@
     shell: /bin/bash
   tags: createuser
 
-# - name: allow user to have passwordless sudo
-#   lineinfile:
-#     dest: /etc/sudoers
-#     line: '{{ admin_user }} ALL=(ALL) NOPASSWD: ALL'
-#     validate: 'visudo -cf %s'
-#   become: yes
-#   when: os_distribution != "Debian"
-#   tags: createuser
+- name: allow user to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    line: '{{ admin_user }} ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  become: yes
+  when: os_distribution != "Debian"
+  tags: createuser
 
 - name: set up authorized keys for the user
   authorized_key:

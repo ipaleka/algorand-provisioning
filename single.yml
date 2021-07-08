@@ -29,5 +29,7 @@
   roles:
     - role: install_other
       when: use_updater
-    - role: setup_service
-      when: use_updater
+    - role: systemd_service
+      when: use_updater and os_family not in ("Darwin", "Windows")
+    - role: launchd_daemon
+      when: use_updater and os_family == "Darwin"

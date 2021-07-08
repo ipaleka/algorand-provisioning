@@ -10,6 +10,21 @@
   with_items:
     - 'export ALGORAND_DATA="{{ node_directory }}/data"'
     - 'export PATH="{{ node_directory }}:$PATH"'
+  when: os_family != "Darwin"
+  tags: algorand-node-setup
+
+- name: add Algorand environment variables exporting to admin user's .zshrc
+  lineinfile:
+    dest: "{{ admin_home_directory }}/.zshrc"
+    line: "{{ item }}"
+    state: present
+    create: yes
+  become: yes
+  become_user: "{{ admin_user }}"
+  with_items:
+    - 'export ALGORAND_DATA="{{ node_directory }}/data"'
+    - 'export PATH="{{ node_directory }}:$PATH"'
+  when: os_family == "Darwin"
   tags: algorand-node-setup
 
 - name: change systemd service directory in systemd-setup for openSUSE
