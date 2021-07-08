@@ -8,7 +8,6 @@ admin_home_directory: "/home/{{ admin_user }}"
 node_directory: "{{ admin_home_directory }}/node"
 
 use_package_manager: false
-algorand_service: "system"  # user
 
 install_algorand_devtools: true
 algorand_network: "testnet"

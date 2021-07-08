@@ -4,18 +4,26 @@
   <dict>
     <key>Label</key>
     <string>org.algorand.daemon</string>
+
     <key>ProgramArguments</key>
     <array>
       <string>{{ node_directory }}/algod</string>
       <string>-d</string>
       <string>{{ node_directory }}/data</string>
     </array>
+
     <key>WorkingDirectory</key>
     <string>{{ node_directory }}</string>
+
     <key>UserName</key>
     <string>{{ admin_user }}</string>
+
     <key>GroupName</key>
     <string>{{ admin_user_group }}</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
     <key>KeepAlive</key>
     <dict>
       <key>NetworkState</key>

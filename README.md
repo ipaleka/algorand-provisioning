@@ -41,8 +41,16 @@ Then add the line `pythonista ALL=(ALL) NOPASSWD: ALL`. Write that content to th
 # Provisioning
 
 
+In order to provision all the hosts from the hosts.yaml inventory, issue the following command from the project's root directory:
+
 ```bash
 ansible-playbook -i hosts.yaml single.yml
+```
+
+To limit provisioning only to some hosts:
+
+```bash
+ansible-playbook -i hosts.yaml -l ubuntu,macos single.yml
 ```
 
 ## Localhost system provisioning
