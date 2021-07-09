@@ -1,36 +1,32 @@
 all:
+  hosts:
+    fedora:
+      ansible_host: 192.168.1.80
+    debian:
+      ansible_host: 192.168.1.81
+    ubuntu:
+      ansible_host: 192.168.1.82
+    opensuse:
+      ansible_host: 192.168.1.83
+    manjaro:
+      ansible_host: 192.168.1.86
+    rocky:
+      ansible_host: 192.168.1.87
+    almalinux:
+      ansible_host: 192.168.1.88
   vars:
     ansible_python_interpreter: /usr/bin/python3
   children:
-    fedora:
-      hosts:
-        192.168.1.80:
-    debian:
-      hosts:
-        192.168.1.81:
-    ubuntu:
-      hosts:
-        192.168.1.82:
-    opensuse:
-      hosts:
-        192.168.1.83:
-    manjaro:
-      hosts:
-        192.168.1.86:
-    rocky:
-      hosts:
-        192.168.1.87:
-    almalinux:
-      hosts:
-        192.168.1.88:
     macos:
       hosts:
-        192.168.1.84:
+        catalina:
+          ansible_host: 192.168.1.84
       vars:
         ansible_user: algonaut
     windows:
       hosts:
-        192.168.1.85:
+        win10:
+          ansible_host: 192.168.1.85
       vars:
         ansible_user: algonaut
         ansible_connection: ssh
