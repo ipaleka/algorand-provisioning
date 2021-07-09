@@ -8,8 +8,6 @@ all:
     debian:
       hosts:
         192.168.1.81:
-      vars:
-        ansible_become_method: su
     ubuntu:
       hosts:
         192.168.1.82:

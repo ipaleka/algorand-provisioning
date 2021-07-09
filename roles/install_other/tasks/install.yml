@@ -21,16 +21,6 @@
   register: updater_file
   tags: algorand-node-setup
 
-- name: remove sudo prefix in updater script for Debian
-  replace:
-    path: "{{ node_directory }}/update.sh"
-    regexp: "sudo -n systemctl"
-    replace: "systemctl"
-  become: yes
-  become_user: "{{ admin_user }}"
-  when: updater_downloaded.changed and os_distribution == "Debian"
-  tags: algorand-node-setup
-
 - name: run the installer
   shell: "yes 'y' | ./update.sh -i -c stable -p {{ node_directory }} -d {{ node_directory }}/data -n"
   args:

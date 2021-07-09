@@ -36,16 +36,3 @@
   become_user: "{{ admin_user }}"
   when: os_family == "Suse"
   tags: algorand-node-setup
-
-- name: remove sed command for sudoers from systemd-setup for Debian
-  replace:
-    path: "{{ node_directory }}/systemd-setup.sh"
-    regexp: "{{ item.from }}"
-    replace: "{{ item.to }}"
-  with_items:
-    - { from: '^    sed \$\{sedargs\} "\$\{SCRIPTPATH\}/sudoers.template"', to: '    # sed ${sedargs} "${SCRIPTPATH}/sudoers.template"' }
-    - { from: '        > /etc/sudoers.d/99-algo-systemctl', to: '    #    > /etc/sudoers.d/99-algo-systemctl' }
-  become: yes
-  become_user: "{{ admin_user }}"
-  when: os_distribution == "Debian"
-  tags: algorand-node-setup

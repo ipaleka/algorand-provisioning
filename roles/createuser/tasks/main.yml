@@ -1,4 +1,11 @@
 ---
+- name: ensure sudo is installed in Debian
+  apt:
+    name: sudo
+    state: present
+  when: os_distribution == "Debian"
+  tags: createuser
+
 - name: ensure group for admin_user exists
   group:
     name: "{{ admin_user_group }}"
@@ -20,7 +27,6 @@
     line: '{{ admin_user }} ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
   become: yes
-  when: os_distribution != "Debian"
   tags: createuser
 
 - name: set up authorized keys for the user
