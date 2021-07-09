@@ -1,6 +1,8 @@
 ---
-- name: set node directory variables
+- name: change some variables when using package manager
   set_fact:
+    admin_user: algorand
+    admin_user_group: algorand
     node_directory: /var/lib/algorand
     node_data_directory: /var/lib/algorand
   tags: algorand-node-setup

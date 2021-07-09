@@ -14,3 +14,9 @@
     state: present
   when: os_distribution == "Debian"
   tags: algorand-node-dependencies
+
+- name: set Algorand executables shell command variables
+  set_fact:
+    goal_executable: "./goal"
+    diagcfg_executable: "./diagcfg"
+  tags: distrochecks

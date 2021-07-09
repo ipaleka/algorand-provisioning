@@ -8,6 +8,7 @@
     group: "{{ admin_user_group }}"
     mode: 0644
     force: no
+  become: yes
   tags: betanet-configuration
 
 - name: change DNSBootstrapID in config.json for betanet
@@ -15,4 +16,5 @@
     path: "{{ node_data_directory }}/config.json"
     regexp: '"DNSBootstrapID": "<network>.algorand.network",'
     replace: '"DNSBootstrapID": "<network>.algodev.network",'
+  become: yes
   tags: betanet-configuration

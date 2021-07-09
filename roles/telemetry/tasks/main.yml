@@ -21,35 +21,35 @@
   tags: telemetry
 
 - name: disable telemetry
-  shell: "diagcfg telemetry disable"
+  shell: "{{ diagcfg_executable }} telemetry disable"
   args:
     chdir: "{{ node_directory }}"
   when: not enable_telemetry and telemetry_currently_enabled
   tags: telemetry
 
 - name: enable telemetry
-  shell: "diagcfg telemetry enable"
+  shell: "{{ diagcfg_executable }} telemetry enable"
   args:
     chdir: "{{ node_directory }}"
   when: enable_telemetry and not telemetry_currently_enabled
   tags: telemetry
 
 - name: provide empty hostname for telemetry
-  shell: 'diagcfg telemetry name -n " "'
+  shell: '{{ diagcfg_executable }} telemetry name -n " "'
   args:
     chdir: "{{ node_directory }}"
   when: enable_telemetry and telemetry_without_hostname and not telemetry_current_empty_hostname
   tags: telemetry
 
 - name: provide fixed hostname for telemetry
-  shell: 'diagcfg telemetry name -n "{{ fixed_hostname_for_telemetry }}"'
+  shell: '{{ diagcfg_executable }} telemetry name -n "{{ fixed_hostname_for_telemetry }}"'
   args:
     chdir: "{{ node_directory }}"
   when: enable_telemetry and not use_hostname_for_telemetry and fixed_hostname_for_telemetry != "" and not telemetry_current_fixed_hostname
   tags: telemetry
 
 - name: provide machine's hostname for telemetry
-  shell: 'diagcfg telemetry name -n "{{ inventory_hostname }}"'
+  shell: '{{ diagcfg_executable }} telemetry name -n "{{ inventory_hostname }}"'
   args:
     chdir: "{{ node_directory }}"
   when: enable_telemetry and use_hostname_for_telemetry and not telemetry_current_hostname
