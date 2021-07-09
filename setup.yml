@@ -61,3 +61,9 @@
     - role: update_setup
       # when: not use_package_manager or os_family not in ("Debian", "RedHat")
       when: not use_package_manager or os_family not in ("Debian", )
+
+- name: setup telemetry providing
+  hosts: all
+  remote_user: "{{ admin_user }}"
+  roles:
+    - role: telemetry

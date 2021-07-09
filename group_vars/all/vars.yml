@@ -12,3 +12,10 @@ install_algorand_devtools: true
 algorand_network: "testnet"
 fast_catchup: true
 algorand_version: 2.7.1  # for retrieving Windows installation binary
+
+# Enable or disable telemetry
+enable_telemetry: false
+# Use machine's hostname
+use_hostname_for_telemetry: false
+# Set fixed hostname or leave empty to disable providing a hostname
+fixed_hostname_for_telemetry: ""
