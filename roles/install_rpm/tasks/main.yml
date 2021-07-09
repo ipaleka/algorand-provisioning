@@ -1,4 +1,9 @@
 ---
+- name: set node_directory variable
+  set_fact:
+    node_directory: /var/lib/algorand
+  tags: algorand-node-setup
+
 # - name: install system dependencies for Algorand node
 #   dnf:
 #     name:
@@ -37,4 +42,16 @@
 - name: ensure Algorand node installation was successful
   command: algod -v
   changed_when: false
+  tags: algorand-node-setup
+
+- name: add Algorand environment variables exporting to admin user's .bash_profile
+  lineinfile:
+    dest: "{{ admin_home_directory }}/.bash_profile"
+    line: "{{ item }}"
+    state: present
+    create: yes
+  become: yes
+  become_user: "{{ admin_user }}"
+  with_items:
+    - 'export ALGORAND_DATA="{{ node_directory }}/data"'
   tags: algorand-node-setup

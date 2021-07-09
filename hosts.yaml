@@ -16,6 +16,15 @@ all:
     opensuse:
       hosts:
         192.168.1.83:
+    manjaro:
+      hosts:
+        192.168.1.86:
+    rocky:
+      hosts:
+        192.168.1.87:
+    almalinux:
+      hosts:
+        192.168.1.88:
     macos:
       hosts:
         192.168.1.84:
@@ -28,21 +37,3 @@ all:
         ansible_user: algonaut
         ansible_connection: ssh
         ansible_shell_type: cmd
-    manjaro:
-      hosts:
-        192.168.1.86:
-    rocky:
-      hosts:
-        192.168.1.87:
-    almalinux:
-      hosts:
-        192.168.1.88:
-    linux:
-      hosts:
-        192.168.1.80:
-        192.168.1.81:
-        192.168.1.82:
-        192.168.1.83:
-        192.168.1.86:
-        192.168.1.87:
-        192.168.1.88:
