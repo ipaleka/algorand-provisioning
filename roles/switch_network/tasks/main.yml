@@ -1,8 +1,0 @@
----
-- include: package_manager_switch.yml
-  # when: use_package_manager and os_family in ("Debian", "RedHat")
-  when: use_package_manager and os_family in ("Debian", )
-
-- include: other_switch.yml
-  # when: not use_package_manager or os_family not in ("Debian", "RedHat")
-  when: not use_package_manager or os_family not in ("Debian", )

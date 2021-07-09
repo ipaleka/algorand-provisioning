@@ -40,12 +40,11 @@
   roles:
     - role: install_win
 
-- name: switch network
+- name: configure network
   hosts: all:!windows
   remote_user: "{{ admin_user }}"
   roles:
-    - role: switch_network
-      when: algorand_network != "mainnet"
+    - role: network_configuration
 
 - name: fast node catchup
   hosts: all
