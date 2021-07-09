@@ -5,26 +5,43 @@
 #     - "{{ hostvars[inventory_hostname].ansible_distribution }}"
 #     - "{{ hostvars[inventory_hostname].ansible_distribution_version }}"
 #     - "{{ hostvars[inventory_hostname].ansible_os_family }}"
-#   tags: distrofacts
+#   tags: distrochecks
 
 - name: set OS variables
   set_fact:
     os_family: "{{ hostvars[inventory_hostname].ansible_os_family }}"
     os_distribution: "{{ hostvars[inventory_hostname].ansible_distribution }}"
-  tags: distrofacts
+  tags: distrochecks
 
 - name: set variables specific to Mac OS
   set_fact:
     admin_home_directory: "/Users/{{ admin_user }}"
     admin_user_group: staff
   when: os_family == "Darwin"
-  tags: distrofacts
+  tags: distrochecks
 
 - name: set variables specific to MS Windows
   set_fact:
     admin_home_directory: "C:\\Users\\{{ admin_user }}"
   when: os_family == "Windows"
-  tags: distrofacts
+  tags: distrochecks
+
+- name: set variable for node directory needs moving
+  set_fact:
+    node_directory_moved: not os_family in ("Darwin", "Windows") node_directory.startswith('/home/') and ansible_selinux is defined and ansible_selinux and ansible_selinux.status == 'enabled'
+  tags: distrochecks
+
+- name: move node directory
+  ansible.builtin.debug:
+    msg: Node directory moved out from /home/ and set to "/opt/algorand_node" as SELinux is enabled
+  when: node_directory_moved
+  tags: distrochecks
+
+- name: move node directory from /home/ directory when SELinux is enabled
+  set_fact:
+    node_directory: "/opt/algorand_node"
+  when: node_directory_moved
+  tags: distrochecks
 
 # ansible_distribution (ansible_distribution_version) ansible_os_family
 

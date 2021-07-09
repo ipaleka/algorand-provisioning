@@ -1,5 +1,4 @@
 ---
-# Here are variables common to all hosts
 project_name: algorand-provisioning
 admin_user: algonaut
 admin_user_group: "{{ admin_user }}"
