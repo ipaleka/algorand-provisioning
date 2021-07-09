@@ -8,12 +8,14 @@
     group: algorand
     mode: 0644
   register: network_switched
+  become: yes
   tags: switch-network
 
 - name: restart Algorand service
   systemd:
     name: algorand
     state: restarted
+  become: yes
   when: network_switched.changed
   tags: switch-network
 
@@ -25,11 +27,13 @@
   until: algorand_service_active.status.ActiveState == "active"
   retries: 5
   delay: 5
+  become: yes
   tags: switch-network
 
 - name: wait until the file /var/lib/algorand/algod.net is present
   wait_for:
     path: /var/lib/algorand/algod.net
+  become: yes
   tags: switch-network
 
 - name: ensure Algorand runs in {{ algorand_network }}
@@ -37,4 +41,5 @@
   register: node_status
   failed_when: 'algorand_network|string not in node_status.stdout'
   changed_when: false
+  become: yes
   tags: switch-network

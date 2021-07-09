@@ -8,7 +8,7 @@
   become: yes
   become_user: "{{ admin_user }}"
   with_items:
-    - 'export ALGORAND_DATA="{{ node_directory }}/data"'
+    - 'export ALGORAND_DATA="{{ node_data_directory }}"'
     - 'export PATH="{{ node_directory }}:$PATH"'
   when: os_family != "Darwin"
   tags: algorand-node-setup
@@ -22,7 +22,7 @@
   become: yes
   become_user: "{{ admin_user }}"
   with_items:
-    - 'export ALGORAND_DATA="{{ node_directory }}/data"'
+    - 'export ALGORAND_DATA="{{ node_data_directory }}"'
     - 'export PATH="{{ node_directory }}:$PATH"'
   when: os_family == "Darwin"
   tags: algorand-node-setup

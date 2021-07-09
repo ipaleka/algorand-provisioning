@@ -23,7 +23,7 @@
   tags: node-sync
 
 - name: catchup node using the latest checkpoint value
-  shell: "./goal node catchup {{ latest_catchpoint }} -d {{ node_directory }}/data"
+  shell: "./goal node catchup {{ latest_catchpoint }} -d {{ node_data_directory }}"
   args:
     chdir: "{{ node_directory }}"
   when: catchpoint_downloaded.changed

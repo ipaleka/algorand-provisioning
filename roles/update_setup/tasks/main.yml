@@ -13,5 +13,5 @@
     hour: "22"
     minute: "30"
     name: "Algorand node update (daily schedule)"
-    job: ": Algorand node update ; {{ node_directory }}/update.sh -d {{ node_directory }}/data > {{ node_directory }}/update.log 2>&1"
+    job: ": Algorand node update ; {{ node_directory }}/update.sh -d {{ node_data_directory }} > {{ node_directory }}/update.log 2>&1"
   tags: update-setup

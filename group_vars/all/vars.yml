@@ -5,6 +5,7 @@ admin_user_group: "{{ admin_user }}"
 admin_email: algonaut@example.com
 admin_home_directory: "/home/{{ admin_user }}"
 node_directory: "{{ admin_home_directory }}/node"
+node_data_directory: "{{ node_data_directory }}"
 
 use_package_manager: false
 install_algorand_devtools: true
@@ -15,5 +16,6 @@ algorand_version: 2.7.1  # for retrieving Windows installation binary
 enable_telemetry: false
 # Use machine's hostname
 use_hostname_for_telemetry: false
+# Use machine's inventory hostname
 # Set fixed hostname or leave empty to disable providing a hostname
 fixed_hostname_for_telemetry: ""

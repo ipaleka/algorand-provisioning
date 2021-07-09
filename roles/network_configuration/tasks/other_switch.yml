@@ -2,7 +2,7 @@
 - name: copy {{ algorand_network }} genesis file to data directory
   copy:
     src: "{{ node_directory }}/genesisfiles/{{ algorand_network }}/genesis.json"
-    dest: "{{ node_directory }}/data/genesis.json"
+    dest: "{{ node_data_directory }}/genesis.json"
     remote_src: yes
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
@@ -11,7 +11,7 @@
   tags: switch-network
 
 - name: restart Algorand systemd service
-  shell: "systemctl restart algorand@$(systemd-escape {{ node_directory }}/data)"
+  shell: "systemctl restart algorand@$(systemd-escape {{ node_data_directory }})"
   become: yes
   when: network_switched.changed and os_family != "Darwin"
   tags: switch-network
@@ -26,11 +26,11 @@
 
 - name: wait until the file algod.net is present in the node data directory
   wait_for:
-    path: "{{ node_directory }}/data/algod.net"
+    path: "{{ node_data_directory }}/algod.net"
   tags: switch-network
 
 - name: ensure Algorand runs in {{ algorand_network }}
-  shell: "./goal node status -d {{ node_directory }}/data"
+  shell: "./goal node status -d {{ node_data_directory }}"
   args:
     chdir: "{{ node_directory }}"
   register: node_status

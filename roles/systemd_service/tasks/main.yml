@@ -8,13 +8,13 @@
   tags: algorand-service
 
 - name: enable algorand systemd service
-  shell: "systemctl enable algorand@$(systemd-escape {{ node_directory }}/data)"
+  shell: "systemctl enable algorand@$(systemd-escape {{ node_data_directory }})"
   when: updater_file.changed
   become: yes
   tags: algorand-service
 
 - name: start algorand systemd service
-  shell: "systemctl start algorand@$(systemd-escape {{ node_directory }}/data)"
+  shell: "systemctl start algorand@$(systemd-escape {{ node_data_directory }})"
   when: updater_file.changed
   become: yes
   tags: algorand-service

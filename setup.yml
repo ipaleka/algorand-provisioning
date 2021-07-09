@@ -24,8 +24,7 @@
   hosts: all:!windows
   remote_user: root
   vars:
-    # use_updater: not use_package_manager or os_family not in ("Debian", "RedHat")
-    use_updater: not use_package_manager or os_family not in ("Debian", )
+    use_updater: '{{ not use_package_manager or os_family != "Debian" }}'
   roles:
     - role: install_other
       when: use_updater
@@ -33,6 +32,8 @@
       when: use_updater and os_family != "Darwin"
     - role: launchd_daemon
       when: use_updater and os_family == "Darwin"
+    - role: update_setup
+      when: use_updater
 
 - name: install and configure using installation binary
   hosts: windows
@@ -46,23 +47,10 @@
   roles:
     - role: network_configuration
 
-- name: fast node catchup
+- name: fast node catchup and telemetry setup
   hosts: all
   remote_user: "{{ admin_user }}"
   roles:
     - role: node_sync
       when: fast_catchup
-
-- name: setup node updating
-  hosts: all:!windows
-  remote_user: "{{ admin_user }}"
-  roles:
-    - role: update_setup
-      # when: not use_package_manager or os_family not in ("Debian", "RedHat")
-      when: not use_package_manager or os_family not in ("Debian", )
-
-- name: setup telemetry providing
-  hosts: all
-  remote_user: "{{ admin_user }}"
-  roles:
     - role: telemetry

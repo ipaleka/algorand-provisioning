@@ -1,18 +1,9 @@
 ---
-- name: check if admin user's node directory exists
+- name: check if node directory exists
   file:
     path: "{{ node_directory }}"
     state: directory
     mode: 0755
-    owner: "{{ admin_user }}"
-    group: "{{ admin_user_group }}"
-  tags: algorand-node-setup
-
-- name: check if Ansible temporary user directory exists
-  file:
-    path: "{{ admin_home_directory }}/.ansible/tmp"
-    state: directory
-    mode: 0700
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
   tags: algorand-node-setup

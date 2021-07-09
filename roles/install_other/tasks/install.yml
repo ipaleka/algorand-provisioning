@@ -22,7 +22,7 @@
   tags: algorand-node-setup
 
 - name: run the installer
-  shell: "yes 'y' | ./update.sh -i -c stable -p {{ node_directory }} -d {{ node_directory }}/data -n"
+  shell: "yes 'y' | ./update.sh -i -c stable -p {{ node_directory }} -d {{ node_data_directory }} -n"
   args:
     chdir: "{{ node_directory }}"
   become: yes
