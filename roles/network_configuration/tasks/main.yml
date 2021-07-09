@@ -8,6 +8,8 @@
   shell: "{{ goal_executable }} node status -d {{ node_data_directory }}"
   args:
     chdir: "{{ node_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
   register: node_status_network
   changed_when: false
   tags: network-configuration

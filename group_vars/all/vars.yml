@@ -7,8 +7,6 @@ admin_home_directory: "/home/{{ admin_user }}"
 node_directory: "{{ admin_home_directory }}/node"
 node_data_directory: "{{ node_directory }}/data"
 
-goal_executable: "goal"
-diagcfg_executable: "diagcfg"
 use_package_manager: false
 install_algorand_devtools: true
 algorand_network: "testnet"

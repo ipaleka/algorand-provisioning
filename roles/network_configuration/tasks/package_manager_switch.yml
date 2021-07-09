@@ -1,11 +1,11 @@
 ---
 - name: copy {{ algorand_network }} genesis file to data directory
   copy:
-    src: "/var/lib/algorand/genesis/{{ algorand_network }}/genesis.json"
-    dest: "/var/lib/algorand/genesis.json"
+    src: "{{ node_data_directory }}/genesis/{{ algorand_network }}/genesis.json"
+    dest: "{{ node_data_directory }}/genesis.json"
     remote_src: yes
-    owner: algorand
-    group: algorand
+    owner: "{{ goal_user }}"
+    group: "{{ goal_user_group }}"
     mode: 0644
   register: network_switched
   become: yes
@@ -30,16 +30,17 @@
   become: yes
   tags: switch-network
 
-- name: wait until the file /var/lib/algorand/algod.net is present
+- name: wait until the file {{ node_data_directory }}/algod.net is present
   wait_for:
-    path: /var/lib/algorand/algod.net
+    path: "{{ node_data_directory }}/algod.net"
   become: yes
   tags: switch-network
 
 - name: ensure Algorand runs in {{ algorand_network }}
-  command: goal node status -d /var/lib/algorand
+  command: "goal node status -d {{ node_data_directory }}"
   register: node_status
   failed_when: 'algorand_network|string not in node_status.stdout'
   changed_when: false
   become: yes
+  become_user: "{{ goal_user }}"
   tags: switch-network

@@ -1,9 +1,16 @@
 ---
-- name: read the logging configuration file content
+- name: read the logging configuration file content for package manager
   ansible.builtin.slurp:
     src: "{{ admin_home_directory }}/.algorand/logging.config"
   register: logging_configuration
-  ignore_errors: true
+  when: admin_user == goal_user
+  tags: telemetry
+
+- name: read the logging configuration file content for updater
+  ansible.builtin.slurp:
+    src: "{{ node_directory }}/.algorand/logging.config"
+  register: logging_configuration
+  when: admin_user != goal_user
   tags: telemetry
 
 - name: set telemetry config variable
@@ -24,6 +31,8 @@
   shell: "{{ diagcfg_executable }} telemetry disable"
   args:
     chdir: "{{ node_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
   when: not enable_telemetry and telemetry_currently_enabled
   tags: telemetry
 
@@ -31,6 +40,8 @@
   shell: "{{ diagcfg_executable }} telemetry enable"
   args:
     chdir: "{{ node_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
   when: enable_telemetry and not telemetry_currently_enabled
   tags: telemetry
 
@@ -38,6 +49,8 @@
   shell: '{{ diagcfg_executable }} telemetry name -n " "'
   args:
     chdir: "{{ node_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
   when: enable_telemetry and telemetry_without_hostname and not telemetry_current_empty_hostname
   tags: telemetry
 
@@ -45,6 +58,8 @@
   shell: '{{ diagcfg_executable }} telemetry name -n "{{ fixed_hostname_for_telemetry }}"'
   args:
     chdir: "{{ node_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
   when: enable_telemetry and not use_hostname_for_telemetry and fixed_hostname_for_telemetry != "" and not telemetry_current_fixed_hostname
   tags: telemetry
 
@@ -52,5 +67,7 @@
   shell: '{{ diagcfg_executable }} telemetry name -n "{{ inventory_hostname }}"'
   args:
     chdir: "{{ node_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
   when: enable_telemetry and use_hostname_for_telemetry and not telemetry_current_hostname
   tags: telemetry

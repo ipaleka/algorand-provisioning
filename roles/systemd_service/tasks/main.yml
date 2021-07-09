@@ -4,17 +4,17 @@
   args:
     chdir: "{{ node_directory }}"
   when: updater_file.changed
-  become: yes
+  # become: yes
   tags: algorand-service
 
 - name: enable algorand systemd service
   shell: "systemctl enable algorand@$(systemd-escape {{ node_data_directory }})"
   when: updater_file.changed
-  become: yes
+  # become: yes
   tags: algorand-service
 
 - name: start algorand systemd service
   shell: "systemctl start algorand@$(systemd-escape {{ node_data_directory }})"
   when: updater_file.changed
-  become: yes
+  # become: yes
   tags: algorand-service

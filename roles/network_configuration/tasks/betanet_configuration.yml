@@ -4,8 +4,8 @@
     src: "{{ node_data_directory }}/config.json.example"
     dest: "{{ node_data_directory }}/config.json"
     remote_src: yes
-    owner: "{{ admin_user }}"
-    group: "{{ admin_user_group }}"
+    owner: "{{ goal_user }}"
+    group: "{{ goal_user_group }}"
     mode: 0644
     force: no
   become: yes

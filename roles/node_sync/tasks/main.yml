@@ -3,15 +3,17 @@
   get_url:
     url: "https://algorand-catchpoints.s3.us-east-2.amazonaws.com/channel/{{ algorand_network }}/latest.catchpoint"
     dest: "{{ node_directory }}/latest.catchpoint"
-    owner: "{{ admin_user }}"
-    group: "{{ admin_user_group }}"
+    owner: "{{ goal_user }}"
+    group: "{{ goal_user_group }}"
     mode: 0644
+  become: yes
   register: catchpoint_downloaded
   tags: node-sync
 
 - name: read the latest checkpoint file content
   ansible.builtin.slurp:
     src: "{{ node_directory }}/latest.catchpoint"
+  become: yes
   register: latest_catchpoint_file
   when: catchpoint_downloaded.changed
   tags: node-sync
@@ -26,5 +28,7 @@
   shell: "{{ goal_executable }} node catchup {{ latest_catchpoint }} -d {{ node_data_directory }}"
   args:
     chdir: "{{ node_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
   when: catchpoint_downloaded.changed
   tags: node-sync
