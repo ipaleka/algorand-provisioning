@@ -1,0 +1,28 @@
+---
+# FIXME https://github.com/algorand/go-algorand/issues/1489#issuecomment-875033099
+#
+# - name: install system dependencies for Algorand node
+#   zypper:
+#     name: yum-cron
+#     state: present
+#   tags: algorand-node-setup
+
+- name: add Algorand Zypper repository
+  community.general.zypper_repository:
+    description: Algorand node
+    repo: https://releases.algorand.com/rpm/stable/algorand.repo
+  tags: algorand-node-setup
+
+- name: install Algorand node and devtools
+  zypper:
+    name: algorand-devtools
+    state: present
+  when: install_algorand_devtools
+  tags: algorand-node-setup
+
+- name: install Algorand node without devtools
+  dnf:
+    name: algorand
+    state: present
+  when: not install_algorand_devtools
+  tags: algorand-node-setup

@@ -9,40 +9,17 @@
     diagcfg_executable: "diagcfg"
   tags: algorand-node-setup
 
-# - name: install system dependencies for Algorand node
-#   dnf:
-#     name:
-#       - yum-cron
-#     state: present
-#   tags: algorand-node-setup
-
 - name: add Algorand rpm-key
   ansible.builtin.rpm_key:
     key: https://releases.algorand.com/rpm/rpm_algorand.pub
     state: present
   tags: algorand-node-setup
 
-- name: add Algorand YUM repository
-  ansible.builtin.yum_repository:
-    name: algorand
-    description: Algorand node
-    file: algorand
-    baseurl: https://releases.algorand.com/rpm/stable
-  tags: algorand-node-setup
+- include: dnf_install.yml
+  when: os_family == "RedHat"
 
-- name: install Algorand node and devtools
-  dnf:
-    name: algorand-devtools
-    state: present
-  when: "install_algorand_devtools|bool"
-  tags: algorand-node-setup
-
-- name: install Algorand node without devtools
-  dnf:
-    name: algorand.x86_64
-    state: present
-  when: "not install_algorand_devtools|bool"
-  tags: algorand-node-setup
+- include: zypper_install.yml
+  when: os_family == "Suse"
 
 - name: ensure Algorand node installation was successful
   command: algod -v

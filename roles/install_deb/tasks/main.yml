@@ -35,14 +35,14 @@
   apt:
     name: algorand-devtools
     state: present
-  when: "install_algorand_devtools|bool"
+  when: install_algorand_devtools
   tags: algorand-node-setup
 
 - name: install Algorand node without devtools
   apt:
     name: algorand
     state: present
-  when: "not install_algorand_devtools|bool"
+  when: not install_algorand_devtools
   tags: algorand-node-setup
 
 - name: ensure Algorand node installation was successful

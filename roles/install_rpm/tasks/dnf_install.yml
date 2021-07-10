@@ -1,0 +1,30 @@
+---
+# FIXME https://github.com/algorand/go-algorand/issues/1489#issuecomment-875033099
+#
+# - name: install system dependencies for Algorand node
+#   dnf:
+#     name: yum-cron
+#     state: present
+#   tags: algorand-node-setup
+
+- name: add Algorand YUM repository
+  ansible.builtin.yum_repository:
+    name: algorand
+    description: Algorand node
+    file: algorand
+    baseurl: https://releases.algorand.com/rpm/stable
+  tags: algorand-node-setup
+
+- name: install Algorand node and devtools
+  dnf:
+    name: algorand-devtools
+    state: present
+  when: install_algorand_devtools
+  tags: algorand-node-setup
+
+- name: install Algorand node without devtools
+  dnf:
+    name: algorand.x86_64
+    state: present
+  when: not install_algorand_devtools
+  tags: algorand-node-setup
