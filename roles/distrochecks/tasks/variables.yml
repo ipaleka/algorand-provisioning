@@ -1,0 +1,65 @@
+---
+# - name: base
+#   ansible.builtin.debug:
+#     msg:
+#     - "{{ hostvars[inventory_hostname].ansible_distribution }}"
+#     - "{{ hostvars[inventory_hostname].ansible_distribution_version }}"
+#     - "{{ hostvars[inventory_hostname].ansible_os_family }}"
+#   tags: distrochecks, variables
+
+- name: set OS variables
+  set_fact:
+    os_family: "{{ hostvars[inventory_hostname].ansible_os_family }}"
+    os_distribution: "{{ hostvars[inventory_hostname].ansible_distribution }}"
+  tags: distrochecks, variables
+
+- name: set variables specific to Mac OS
+  set_fact:
+    admin_home_directory: "/Users/{{ admin_user }}"
+    admin_user_group: staff
+  when: os_family == "Darwin"
+  tags: distrochecks, variables
+
+- name: set variables specific to MS Windows
+  set_fact:
+    admin_home_directory: "C:\\Users\\{{ admin_user }}"
+  when: os_family == "Windows"
+  tags: distrochecks, variables
+
+- name: set variable indicating should updater be used for node installing
+  set_fact:
+    updater_install: '{{ not use_package_manager or os_family != "Debian" }}'
+  tags: distrochecks, variables
+
+- name: set variable for node directory needs relocation
+  set_fact:
+    node_directory_relocated: "{{ not os_family in ('Darwin', 'Windows') and node_directory.startswith('/home/') and ansible_selinux is defined and ansible_selinux and ansible_selinux.status == 'enabled' }}"
+  tags: distrochecks, variables
+
+- name: relocate node directory
+  ansible.builtin.debug:
+    msg: Node directory relocated out from /home/ and set to "/opt/algorand_node" as SELinux is enabled
+  when: node_directory_relocated
+  tags: distrochecks, variables
+
+- name: relocate node directory from /home/ directory when SELinux is enabled
+  set_fact:
+    node_directory: "/opt/algorand_node"
+  when: node_directory_relocated
+  tags: distrochecks, variables
+
+# ansible_distribution (ansible_distribution_version) ansible_os_family
+
+# Fedora (34) RedHat
+# Debian (10) Debian
+# Ubuntu (20.04) Debian
+# openSUSE Leap (15.3) Suse
+# MacOSX (10.15.7) Darwin
+# Microsoft Windows 10 Pro (10.0.19042.0) Windows
+# Archlinux (21.0.7) Archlinux
+# Rocky (8.4) RedHat
+# AlmaLinux (8.4) RedHat
+
+# Oracle Linux
+# Mageia
+# ClearOS

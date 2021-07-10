@@ -1,0 +1,44 @@
+---
+- name: ensure sudo is installed in Debian
+  apt:
+    name: sudo
+    state: present
+  when: os_distribution == "Debian"
+  tags: distrochecks, requirements, createuser
+
+- name: ensure crontab is installed in Fedora
+  dnf:
+    name: cronie
+    state: present
+  when: os_distribution == "Fedora"
+  tags: distrochecks, requirements, update-setup
+
+# https://github.com/georchestra/ansible/issues/55#issuecomment-588313638
+#
+- name: ensure setfacl tool is present in Debian-based distributions
+  apt:
+    name: acl
+    state: present
+  when: os_family == "Debian"
+  tags: distrochecks, requirements
+
+- name: ensure setfacl tool is present in RedHat-based distributions
+  dnf:
+    name: acl
+    state: present
+  when: os_family == "RedHat"
+  tags: distrochecks, requirements
+
+- name: ensure setfacl tool is present in SUSE-based distributions
+  zypper:
+    name: acl
+    state: present
+  when: os_family == "Suse"
+  tags: distrochecks, requirements
+
+- name: ensure setfacl tool is present in Arch-based distributions
+  pacman:
+    name: acl
+    state: present
+  when: os_family == "Archlinux"
+  tags: distrochecks, requirements

@@ -1,12 +1,4 @@
 ---
-- name: ensure crontab is installed
-  dnf:
-    name: cronie
-    state: present
-  when: os_distribution == "Fedora"
-  become: yes
-  tags: update-setup
-
 - name: create daily update check cronjob
   cron:
     weekday: "*"
