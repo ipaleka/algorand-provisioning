@@ -30,8 +30,8 @@
 - name: change systemd service directory in systemd-setup for openSUSE
   replace:
     path: "{{ node_directory }}/systemd-setup.sh"
-    regexp: "/lib/systemd/system/algorand@.service"
-    replace: "/usr/lib/systemd/system/algorand@.service"
+    regexp: "> /lib/systemd/system/algorand@.service"
+    replace: "> /usr/lib/systemd/system/algorand@.service"
   become: yes
   become_user: "{{ admin_user }}"
   when: os_family == "Suse"

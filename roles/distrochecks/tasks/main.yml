@@ -26,21 +26,26 @@
   when: os_family == "Windows"
   tags: distrochecks
 
-- name: set variable for node directory needs moving
+- name: set variable for node directory needs relocation
   set_fact:
-    node_directory_moved: "{{ not os_family in ('Darwin', 'Windows') and node_directory.startswith('/home/') and ansible_selinux is defined and ansible_selinux and ansible_selinux.status == 'enabled' }}"
+    node_directory_relocated: "{{ not os_family in ('Darwin', 'Windows') and node_directory.startswith('/home/') and ansible_selinux is defined and ansible_selinux and ansible_selinux.status == 'enabled' }}"
   tags: distrochecks
 
-- name: move node directory
+- name: relocate node directory
   ansible.builtin.debug:
-    msg: Node directory moved out from /home/ and set to "/opt/algorand_node" as SELinux is enabled
-  when: node_directory_moved
+    msg: Node directory relocated out from /home/ and set to "/opt/algorand_node" as SELinux is enabled
+  when: node_directory_relocated
   tags: distrochecks
 
-- name: move node directory from /home/ directory when SELinux is enabled
+- name: relocate node directory from /home/ directory when SELinux is enabled
   set_fact:
     node_directory: "/opt/algorand_node"
-  when: node_directory_moved
+  when: node_directory_relocated
+  tags: distrochecks
+
+- name: set variable indicating should updater be used for node installing
+  set_fact:
+    updater_install: '{{ not use_package_manager or os_family != "Debian" }}'
   tags: distrochecks
 
 # ansible_distribution (ansible_distribution_version) ansible_os_family
@@ -54,3 +59,7 @@
 # Archlinux (21.0.7) Archlinux
 # Rocky (8.4) RedHat
 # AlmaLinux (8.4) RedHat
+
+# Oracle Linux
+# Mageia
+# ClearOS

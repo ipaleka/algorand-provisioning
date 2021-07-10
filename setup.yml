@@ -16,24 +16,22 @@
   remote_user: root
   roles:
     - role: install_deb
-      when: use_package_manager and os_family == "Debian"
+      when: not updater_install and os_family == "Debian"
     # - role: install_rpm
-    #   when: use_package_manager and os_family == "RedHat"
+    #   when: not updater_install and os_family == "RedHat"
 
 - name: install and configure using updater script
   hosts: all:!windows
   remote_user: root
-  vars:
-    use_updater: '{{ not use_package_manager or os_family != "Debian" }}'
   roles:
     - role: install_other
-      when: use_updater
+      when: updater_install
     - role: systemd_service
-      when: use_updater and os_family != "Darwin"
+      when: updater_install and os_family != "Darwin"
     - role: launchd_daemon
-      when: use_updater and os_family == "Darwin"
+      when: updater_install and os_family == "Darwin"
     - role: update_setup
-      when: use_updater
+      when: updater_install
 
 - name: install and configure using installation binary
   hosts: windows

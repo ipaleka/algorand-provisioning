@@ -1,21 +1,28 @@
 ---
 - name: read the logging configuration file content for package manager
   ansible.builtin.slurp:
-    src: "{{ admin_home_directory }}/.algorand/logging.config"
-  register: logging_configuration
-  when: admin_user == goal_user
+    src: "{{ node_directory }}/.algorand/logging.config"
+  register: logging_configuration_package_manager
+  when: not updater_install
   tags: telemetry
 
 - name: read the logging configuration file content for updater
   ansible.builtin.slurp:
-    src: "{{ node_directory }}/.algorand/logging.config"
-  register: logging_configuration
-  when: admin_user != goal_user
+    src: "{{ admin_home_directory }}/.algorand/logging.config"
+  register: logging_configuration_updater
+  when: updater_install
   tags: telemetry
 
-- name: set telemetry config variable
+- name: set telemetry config variable for package manager
   set_fact:
-    telemetry_config: "{{ logging_configuration['content'] | b64decode }}"
+    telemetry_config: "{{ logging_configuration_package_manager['content'] | b64decode }}"
+  when: not updater_install
+  tags: telemetry
+
+- name: set telemetry config variable for updater
+  set_fact:
+    telemetry_config: "{{ logging_configuration_updater['content'] | b64decode }}"
+  when: updater_install
   tags: telemetry
 
 - name: pre-set telemetry Boolean variables
