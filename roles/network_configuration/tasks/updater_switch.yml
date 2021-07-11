@@ -13,7 +13,7 @@
 - name: restart Algorand systemd service
   shell: "systemctl restart algorand@$(systemd-escape {{ node_data_directory }})"
   become: yes
-  when: network_switched.changed and os_family != "Darwin"
+  when: network_switched.changed and not (os_family in ("Darwin", "Alpine"))
   tags: switch-network
 
 - name: restart Algorand node daemon
@@ -22,6 +22,14 @@
     state: restarted
   become: yes
   when: network_switched.changed and os_family == "Darwin"
+  tags: switch-network
+
+- name: restart Algorand node service
+  service:
+    name: algorand
+    state: restarted
+  become: yes
+  when: network_switched.changed and os_family == "Alpine"
   tags: switch-network
 
 - name: wait until the file algod.net is present in the node data directory

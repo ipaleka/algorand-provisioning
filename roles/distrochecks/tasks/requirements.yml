@@ -1,10 +1,25 @@
 ---
-- name: ensure sudo is installed in Debian
+- name: ensure requirements are installed in Debian
   apt:
-    name: sudo
+    name: "{{ item }}"
     state: present
+  with_items:
+    - sudo
+    - curl
   when: os_distribution == "Debian"
-  tags: distrochecks, requirements, createuser
+  tags: distrochecks, requirements
+
+- name: ensure requirements are installed in Alpine
+  apk:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - bash
+    - sudo
+    - curl
+    - libc6-compat
+  when: os_distribution == "Alpine"
+  tags: distrochecks, requirements
 
 - name: ensure crontab is installed in Fedora
   dnf:
@@ -12,6 +27,13 @@
     state: present
   when: os_distribution == "Fedora"
   tags: distrochecks, requirements, update-setup
+
+- name: ensure tar is installed in AlmaLinux
+  yum:
+    name: tar
+    state: present
+  when: os_distribution == "AlmaLinux"
+  tags: distrochecks, requirements
 
 # https://github.com/georchestra/ansible/issues/55#issuecomment-588313638
 #

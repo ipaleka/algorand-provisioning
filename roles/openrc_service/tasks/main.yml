@@ -1,0 +1,16 @@
+---
+- name: install Algorand startup script
+  template:
+    src: algorand.rc
+    dest: /etc/init.d/algorand
+    owner: root
+    group: root
+    mode: 0755
+  tags: algorand-service
+
+- name: enable and start Algorand node service
+  service:
+    name: algorand
+    state: started
+    enabled: yes
+  tags: algorand-service

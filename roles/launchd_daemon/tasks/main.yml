@@ -9,7 +9,7 @@
   become: yes
   tags: algorand-service
 
-- name: enable Algorand node daemon
+- name: enable and start Algorand node daemon
   community.general.launchd:
     name: org.algorand.daemon
     state: started

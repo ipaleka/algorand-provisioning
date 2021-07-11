@@ -29,9 +29,11 @@
     - role: install_other
       when: updater_install
     - role: systemd_service
-      when: updater_install and os_family != "Darwin"
+      when: updater_install and os_family not in ("Darwin", "Alpine")
     - role: launchd_daemon
       when: updater_install and os_family == "Darwin"
+    - role: openrc_service
+      when: updater_install and os_family == "Alpine"
     - role: update_setup
       when: updater_install
 

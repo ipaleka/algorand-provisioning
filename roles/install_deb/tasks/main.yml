@@ -11,11 +11,11 @@
 
 - name: install system dependencies for Algorand node
   apt:
-    name:
-      - gnupg2
-      - curl
-      - software-properties-common
+    name: "{{ item }}"
     state: present
+  with_items:
+    - gnupg2
+    - software-properties-common
   tags: algorand-node-setup
 
 - name: add Algorand apt-key

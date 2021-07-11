@@ -12,6 +12,19 @@
     state: present
     createhome: yes
     shell: /bin/bash
+  when: os_distribution != "Alpine"
+  tags: createuser
+
+- name: create admin_user in Alpine (user password required)
+  user:
+    name: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    password: '{{ query("community.general.random_string")[0] | password_hash("sha256") }}'
+    update_password: on_create
+    state: present
+    createhome: yes
+    shell: /bin/bash
+  when: os_distribution == "Alpine"
   tags: createuser
 
 - name: allow user to have passwordless sudo

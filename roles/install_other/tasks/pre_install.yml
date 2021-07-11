@@ -8,13 +8,6 @@
     group: "{{ admin_user_group }}"
   tags: algorand-node-setup
 
-- name: install dependencies for Debian
-  apt:
-    name: curl
-    state: present
-  when: os_distribution == "Debian"
-  tags: algorand-node-dependencies
-
 - name: set Algorand executables shell command variables
   set_fact:
     goal_user: "{{ admin_user }}"
