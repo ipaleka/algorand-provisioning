@@ -26,14 +26,14 @@
   dnf:
     name: acl
     state: present
-  when: os_family == "RedHat" and not (os_distribution == "CentOS" and os_version is version('8', '<'))
+  when: os_family == "RedHat" and not (os_distribution == "CentOS" and os_version is version("8", "<"))
   tags: distrochecks, requirements
 
-- name: ensure setfacl tool is present in CentOS
+- name: ensure setfacl tool is present in CentOS 7
   yum:
     name: acl
     state: present
-  when: os_distribution == "CentOS" and os_version is version('8', '<')
+  when: os_distribution == "CentOS" and os_version is version("8", "<")
   tags: distrochecks, requirements
 
 - name: ensure setfacl tool is present in SUSE-based distributions

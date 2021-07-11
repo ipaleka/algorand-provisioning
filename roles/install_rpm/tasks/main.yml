@@ -16,7 +16,10 @@
   tags: algorand-node-setup
 
 - include: dnf_install.yml
-  when: os_family == "RedHat"
+  when: os_family == "RedHat" and not (os_distribution == "CentOS" and os_version is version("8", "<"))
+
+- include: yum_install.yml
+  when: os_distribution == "CentOS" and os_version is version("8", "<")
 
 - include: zypper_install.yml
   when: os_family == "Suse"

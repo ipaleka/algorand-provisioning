@@ -7,7 +7,7 @@ admin_home_directory: "/home/{{ admin_user }}"
 node_directory: "{{ admin_home_directory }}/node"
 node_data_directory: "{{ node_directory }}/data"
 
-use_package_manager: false
+use_package_manager: true
 install_algorand_devtools: true
 algorand_network: "testnet"
 fast_catchup: true

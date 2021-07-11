@@ -23,9 +23,7 @@
   when: need_network_switch and algorand_network == "betanet"
 
 - include: package_manager_switch.yml
-  # when: need_network_switch and use_package_manager and os_family in ("Debian", "RedHat")
-  when: need_network_switch and use_package_manager and os_family in ("Debian", )
+  when: need_network_switch and not updater_install
 
-- include: other_switch.yml
-  # when: need_network_switch and (not use_package_manager or os_family not in ("Debian", "RedHat"))
-  when: need_network_switch and (not use_package_manager or os_family not in ("Debian", ))
+- include: updater_switch.yml
+  when: need_network_switch and updater_install

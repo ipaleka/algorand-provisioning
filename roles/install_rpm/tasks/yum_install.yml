@@ -1,0 +1,29 @@
+---
+- name: add Algorand YUM repository
+  ansible.builtin.yum_repository:
+    name: algorand
+    description: Algorand node
+    file: algorand
+    baseurl: https://releases.algorand.com/rpm/stable
+  tags: algorand-node-setup
+
+- name: install Algorand node and devtools
+  yum:
+    name: algorand-devtools
+    state: present
+  when: install_algorand_devtools
+  tags: algorand-node-setup
+
+- name: install Algorand node without devtools
+  yum:
+    name: algorand
+    state: present
+  when: not install_algorand_devtools
+  tags: algorand-node-setup
+
+- name: ensure Algorand service is enabled and started
+  systemd:
+    name: algorand
+    state: started
+    enabled: yes
+  tags: algorand-node-setup

@@ -17,8 +17,9 @@
   roles:
     - role: install_deb
       when: not updater_install and os_family == "Debian"
+    - role: install_rpm
+      when: not updater_install and os_distribution == "CentOS"
     # # FIXME https://github.com/algorand/go-algorand/issues/1489#issuecomment-875033099
-    # - role: install_rpm
     #   when: not updater_install and os_family in ("Suse", "RedHat")
 
 - name: install and configure using updater script
