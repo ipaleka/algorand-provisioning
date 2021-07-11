@@ -23,13 +23,12 @@ Set your host(s) in the `hosts` configuration file found in the root directory. 
 
 ## Python 3 installation
 
-### CentOS 7
+### CentOS
 
 ```bash
 # yum update -y
 # yum install -y python3
 ```
-
 
 ## Mac OS
 

@@ -20,6 +20,8 @@ all:
       ansible_host: 192.168.1.90
     centos7:
       ansible_host: 192.168.1.91
+    centos8:
+      ansible_host: 192.168.1.92
   vars:
     ansible_python_interpreter: /usr/bin/python3
   children:
