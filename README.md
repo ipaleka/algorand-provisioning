@@ -5,21 +5,31 @@ Ansible playbooks for provisioning the Algorand nodes and indexer to various OS 
 
 # Requirements
 
-Yous should have Ansible installed.
+Ansible should have been installed on the host machine.
 
-
+Python 3 has to be installed on the guest machine(s).
 
 
 Set your host(s) in the `hosts` configuration file found in the root directory. The initial configuration implies some virtual machines are created in your local network.
 
 # Configuration
 
-## openSUSE
+## Setup static IP
 
-`/etc/sysconfig/network/config`
+### During installation
+
+- openSUSE Leap
+- CentOS 7
+
+## Python 3 installation
+
+### CentOS 7
+
 ```bash
-NETCONFIG_DNS_STATIC_SERVERS="8.8.8.8"
+# yum update -y
+# yum install -y python3
 ```
+
 
 ## Mac OS
 

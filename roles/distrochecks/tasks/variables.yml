@@ -9,8 +9,9 @@
 
 - name: set OS variables
   set_fact:
-    os_family: "{{ hostvars[inventory_hostname].ansible_os_family }}"
-    os_distribution: "{{ hostvars[inventory_hostname].ansible_distribution }}"
+    os_family: "{{ ansible_os_family }}"
+    os_distribution: "{{ ansible_distribution }}"
+    os_version: "{{ ansible_distribution_version }}"
   tags: distrochecks, variables
 
 - name: set variables specific to Mac OS
@@ -63,3 +64,4 @@
 # AlmaLinux (8.4) RedHat
 # OracleLinux (8.4) RedHat
 # Mageia (8) Mageia
+# CentOS (7.9) RedHat
