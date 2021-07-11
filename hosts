@@ -5,6 +5,8 @@ opensuse ansible_host=192.168.1.83
 manjaro ansible_host=192.168.1.86
 rocky ansible_host=192.168.1.87
 almalinux ansible_host=192.168.1.88
+oracle ansible_host=192.168.1.89
+mageia ansible_host=192.168.1.90
 
 [macos]
 catalina ansible_host=192.168.1.84
