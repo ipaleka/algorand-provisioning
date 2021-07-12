@@ -18,7 +18,7 @@
       set_fact:
         ansible_user: "{{ superuser if superuser is defined else 'root' }}"
 
-- name: retrieve OS data
+- name: setup OS requirements and information
   hosts: all
   remote_user: "{{ admin_user }}"
   roles:
