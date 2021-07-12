@@ -41,7 +41,7 @@
 
 - name: relocate node directory
   ansible.builtin.debug:
-    msg: Node directory relocated out from /home/ and set to "/opt/algorand_node" as SELinux is enabled
+    msg: Node directory relocated out from /home/ and set to /opt/algorand_node because SELinux is enabled
   when: node_directory_relocated
   tags: distrochecks, variables
 
@@ -69,3 +69,4 @@
 # Alpine (3.14.0) Alpine
 # Ubuntu (18.04) Debian
 # Ubuntu (21.04) Debian
+# Debian (11) Debian
