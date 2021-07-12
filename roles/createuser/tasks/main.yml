@@ -3,6 +3,7 @@
   group:
     name: "{{ admin_user_group }}"
     state: present
+  become: yes
   tags: createuser
 
 - name: create admin_user
@@ -12,6 +13,7 @@
     state: present
     createhome: yes
     shell: /bin/bash
+  become: yes
   when: os_distribution != "Alpine"
   tags: createuser
 
@@ -24,6 +26,7 @@
     state: present
     createhome: yes
     shell: /bin/bash
+  become: yes
   when: os_distribution == "Alpine"
   tags: createuser
 
@@ -35,15 +38,6 @@
   become: yes
   tags: createuser
 
-- name: set up authorized keys for the user
-  authorized_key:
-    user: "{{ admin_user }}"
-    key: "{{ item }}"
-  with_file:
-    - ~/.ssh/id_rsa.pub
-  ignore_errors: yes
-  tags: createuser
-
 - name: check if Ansible temporary user directory exists
   file:
     path: "{{ admin_home_directory }}/.ansible/tmp"
@@ -51,4 +45,21 @@
     mode: 0700
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
-  tags: algorand-node-setup
+  become: yes
+  tags: createuser
+
+- name: set up authorized keys for the user
+  authorized_key:
+    user: "{{ admin_user }}"
+    key: "{{ item }}"
+  become: yes
+  become_user: "{{ admin_user }}"
+  with_file:
+    - ~/.ssh/id_rsa.pub
+  ignore_errors: yes
+  tags: createuser
+
+- name: set created admin_user as ansible_user
+  set_fact:
+    ansible_user: "{{ admin_user }}"
+  tags: createuser

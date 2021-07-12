@@ -23,11 +23,11 @@
   service:
     name: algorand
     state: started
+  become: yes
   register: algorand_service_active
   until: algorand_service_active.status.ActiveState == "active"
   retries: 5
   delay: 5
-  become: yes
   tags: switch-network
 
 - name: wait until the file {{ node_data_directory }}/algod.net is present
@@ -38,9 +38,9 @@
 
 - name: ensure Algorand runs in {{ algorand_network }}
   command: "goal node status -d {{ node_data_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
   register: node_status
   failed_when: 'algorand_network|string not in node_status.stdout'
   changed_when: false
-  become: yes
-  become_user: "{{ goal_user }}"
   tags: switch-network

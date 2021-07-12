@@ -25,7 +25,5 @@
   shell: "yes 'y' | ./update.sh -i -c stable -p {{ node_directory }} -d {{ node_data_directory }} -n"
   args:
     chdir: "{{ node_directory }}"
-  become: yes
-  become_user: "{{ admin_user }}"
   when: updater_file.changed
   tags: algorand-node-setup

@@ -13,12 +13,14 @@
     description: Algorand node
     file: algorand
     baseurl: https://releases.algorand.com/rpm/stable
+  become: yes
   tags: algorand-node-setup
 
 - name: install Algorand node and devtools
   dnf:
     name: algorand-devtools
     state: present
+  become: yes
   when: install_algorand_devtools
   tags: algorand-node-setup
 
@@ -26,5 +28,6 @@
   dnf:
     name: algorand.x86_64
     state: present
+  become: yes
   when: not install_algorand_devtools
   tags: algorand-node-setup

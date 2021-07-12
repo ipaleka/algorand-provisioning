@@ -11,12 +11,14 @@
   community.general.zypper_repository:
     description: Algorand node
     repo: https://releases.algorand.com/rpm/stable/algorand.repo
+  become: yes
   tags: algorand-node-setup
 
 - name: install Algorand node and devtools
   zypper:
     name: algorand-devtools
     state: present
+  become: yes
   when: install_algorand_devtools
   tags: algorand-node-setup
 
@@ -24,5 +26,6 @@
   dnf:
     name: algorand
     state: present
+  become: yes
   when: not install_algorand_devtools
   tags: algorand-node-setup

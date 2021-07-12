@@ -13,6 +13,7 @@
   ansible.builtin.rpm_key:
     key: https://releases.algorand.com/rpm/rpm_algorand.pub
     state: present
+  become: yes
   tags: algorand-node-setup
 
 - include: dnf_install.yml
@@ -35,6 +36,4 @@
     line: 'export ALGORAND_DATA="{{ node_data_directory }}"'
     state: present
     create: yes
-  become: yes
-  become_user: "{{ admin_user }}"
   tags: algorand-node-setup

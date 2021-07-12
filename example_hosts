@@ -22,6 +22,7 @@ win10 ansible_host=192.168.1.85
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
+# superuser=root
 
 [macos:vars]
 ansible_user=algonaut

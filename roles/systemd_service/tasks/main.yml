@@ -3,15 +3,18 @@
   shell: "./systemd-setup.sh {{ admin_user }} {{ admin_user }}"
   args:
     chdir: "{{ node_directory }}"
+  become: yes
   when: updater_file.changed
   tags: algorand-service
 
 - name: enable algorand systemd service
   shell: "systemctl enable algorand@$(systemd-escape {{ node_data_directory }})"
+  become: yes
   when: updater_file.changed
   tags: algorand-service
 
 - name: start algorand systemd service
   shell: "systemctl start algorand@$(systemd-escape {{ node_data_directory }})"
+  become: yes
   when: updater_file.changed
   tags: algorand-service

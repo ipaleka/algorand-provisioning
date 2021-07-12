@@ -6,6 +6,7 @@
     mode: 0755
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
+  become: yes
   tags: algorand-node-setup
 
 - name: set Algorand executables shell command variables

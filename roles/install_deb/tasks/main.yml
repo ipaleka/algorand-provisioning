@@ -13,6 +13,7 @@
   apt:
     name: "{{ item }}"
     state: present
+  become: yes
   with_items:
     - gnupg2
     - software-properties-common
@@ -22,6 +23,7 @@
   apt_key:
     url: https://releases.algorand.com/key.pub
     state: present
+  become: yes
   tags: algorand-node-setup
 
 - name: add Algorand APT repository
@@ -29,12 +31,14 @@
     repo: deb [arch=amd64] https://releases.algorand.com/deb/ stable main
     state: present
     filename: 'algorand-node'
+  become: yes
   tags: algorand-node-setup
 
 - name: install Algorand node and devtools
   apt:
     name: algorand-devtools
     state: present
+  become: yes
   when: install_algorand_devtools
   tags: algorand-node-setup
 
@@ -42,6 +46,7 @@
   apt:
     name: algorand
     state: present
+  become: yes
   when: not install_algorand_devtools
   tags: algorand-node-setup
 

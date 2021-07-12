@@ -32,6 +32,7 @@ all:
       ansible_host: 192.168.1.96
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    # superuser: root
   children:
     macos:
       hosts:
