@@ -1,4 +1,5 @@
 ---
+# SETUP
 - name: check if admin_user can connect
   hosts: all:!windows:!macos
   gather_facts: false
@@ -31,7 +32,8 @@
     - role: createuser
       when: admin_user_ping.unreachable is defined
 
-- name: install and configure using package manager
+# INSTALL NODE AND SERVICE
+- name: install using package manager
   hosts: all:!windows:!macos
   remote_user: "{{ admin_user }}"
   roles:
@@ -42,7 +44,7 @@
     # # FIXME https://github.com/algorand/go-algorand/issues/1489#issuecomment-875033099
     #   when: not updater_install and os_family in ("Suse", "RedHat")
 
-- name: install and configure using updater script
+- name: install using updater script
   hosts: all:!windows
   remote_user: "{{ admin_user }}"
   roles:
@@ -57,22 +59,20 @@
     - role: update_setup
       when: updater_install
 
-- name: install and configure using installation binary
+- name: install using installation binary
   hosts: windows
   remote_user: "{{ admin_user }}"
   roles:
     - role: install_win
 
-- name: configure network
-  hosts: all:!windows
-  remote_user: "{{ admin_user }}"
-  roles:
-    - role: network_configuration
-
-- name: fast node catchup and telemetry setup
+# POST-INSTALL CONFIGURATION
+- name: node configuration
   hosts: all
   remote_user: "{{ admin_user }}"
   roles:
+    - role: network_configuration
+      when: os_family != "Windows"
     - role: node_sync
       when: fast_catchup
     - role: telemetry
+      when: os_family != "Windows"

@@ -7,11 +7,13 @@
 #     - "{{ hostvars[inventory_hostname].ansible_os_family }}"
 #   tags: distrochecks, variables
 
-- name: set OS variables
+- name: set common OS and Algorand variables
   set_fact:
     os_family: "{{ ansible_os_family }}"
     os_distribution: "{{ ansible_distribution }}"
     os_version: "{{ ansible_distribution_version }}"
+    goal_executable: "goal"
+    diagcfg_executable: "diagcfg"
   tags: distrochecks, variables
 
 - name: set variables specific to Mac OS
@@ -24,9 +26,9 @@
 - name: set variables specific to MS Windows
   set_fact:
     admin_home_directory: "C:\\Users\\{{ admin_user }}\\"
-    node_directory: "C:\\Users\\{{ admin_user }}\\node\\"
-    node_data_directory: "C:\\Users\\{{ admin_user }}\\node\\data\\"
-
+    node_directory: "{{ ansible_facts.env['ProgramFiles'] }}\\Algorand\\"
+    node_data_directory: "{{ ansible_facts.env['ProgramData'] }}\\Algorand\\data\\"
+    algorand_network_base: "{{ 'testnet' if algorand_network != 'mainnet' else 'mainnet' }}"
   when: os_family == "Windows"
   tags: distrochecks, variables
 

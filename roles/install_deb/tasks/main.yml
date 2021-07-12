@@ -5,8 +5,6 @@
     goal_user_group: algorand
     node_directory: /var/lib/algorand/
     node_data_directory: /var/lib/algorand/
-    goal_executable: "goal"
-    diagcfg_executable: "diagcfg"
   tags: algorand-node-setup
 
 - name: install system dependencies for Algorand node
