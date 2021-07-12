@@ -1,7 +1,7 @@
 #!/sbin/openrc-run
 
-command="{{ node_directory }}/algod"
+command="{{ node_directory }}algod"
 command_args="-d {{ node_data_directory }}"
 command_background=true
-pidfile="{{ node_data_directory }}/algod.pid"
+pidfile="{{ node_data_directory }}algod.pid"
 command_user="{{ admin_user }}:{{ admin_user_group }}"

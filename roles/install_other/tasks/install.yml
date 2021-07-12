@@ -2,7 +2,7 @@
 - name: download the updater script
   get_url:
     url: https://raw.githubusercontent.com/algorand/go-algorand-doc/master/downloads/installers/update.sh
-    dest: "{{ node_directory }}/update_by_ansible.sh"
+    dest: "{{ node_directory }}update_by_ansible.sh"
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
     mode: 0755
@@ -11,8 +11,8 @@
 
 - name: copy newer updater script
   copy:
-    src: "{{ node_directory }}/update_by_ansible.sh"
-    dest: "{{ node_directory }}/update.sh"
+    src: "{{ node_directory }}update_by_ansible.sh"
+    dest: "{{ node_directory }}update.sh"
     remote_src: yes
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"

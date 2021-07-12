@@ -16,14 +16,17 @@
 
 - name: set variables specific to Mac OS
   set_fact:
-    admin_home_directory: "/Users/{{ admin_user }}"
+    admin_home_directory: "/Users/{{ admin_user }}/"
     admin_user_group: staff
   when: os_family == "Darwin"
   tags: distrochecks, variables
 
 - name: set variables specific to MS Windows
   set_fact:
-    admin_home_directory: "C:\\Users\\{{ admin_user }}"
+    admin_home_directory: "C:\\Users\\{{ admin_user }}\\"
+    node_directory: "C:\\Users\\{{ admin_user }}\\node\\"
+    node_data_directory: "C:\\Users\\{{ admin_user }}\\node\\data\\"
+
   when: os_family == "Windows"
   tags: distrochecks, variables
 
@@ -47,7 +50,7 @@
 
 - name: relocate node directory from /home/ directory when SELinux is enabled
   set_fact:
-    node_directory: "/opt/algorand_node"
+    node_directory: "/opt/algorand_node/"
   when: node_directory_relocated
   tags: distrochecks, variables
 

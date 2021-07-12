@@ -2,7 +2,7 @@
 - name: retrieve the latest catchpoint
   get_url:
     url: "https://algorand-catchpoints.s3.us-east-2.amazonaws.com/channel/{{ algorand_network }}/latest.catchpoint"
-    dest: "{{ node_directory }}/latest.catchpoint"
+    dest: "{{ node_directory }}latest.catchpoint"
     owner: "{{ goal_user }}"
     group: "{{ goal_user_group }}"
     mode: 0644
@@ -12,7 +12,7 @@
 
 - name: read the latest checkpoint file content
   ansible.builtin.slurp:
-    src: "{{ node_directory }}/latest.catchpoint"
+    src: "{{ node_directory }}latest.catchpoint"
   become: yes
   register: latest_catchpoint_file
   when: catchpoint_downloaded.changed

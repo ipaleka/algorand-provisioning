@@ -1,7 +1,7 @@
 ---
-- name: wait until the file algod.net is present in the node data directory
+- name: wait until algod.net is present in the node data directory
   wait_for:
-    path: "{{ node_data_directory }}/algod.net"
+    path: "{{ node_data_directory }}algod.net"
   tags: network-configuration
 
 - name: register node status as variable

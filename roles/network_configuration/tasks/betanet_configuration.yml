@@ -1,8 +1,8 @@
 ---
 - name: create config.json file if it doesn't exist
   copy:
-    src: "{{ node_data_directory }}/config.json.example"
-    dest: "{{ node_data_directory }}/config.json"
+    src: "{{ node_data_directory }}config.json.example"
+    dest: "{{ node_data_directory }}config.json"
     remote_src: yes
     owner: "{{ goal_user }}"
     group: "{{ goal_user_group }}"
@@ -13,7 +13,7 @@
 
 - name: change DNSBootstrapID in config.json for betanet
   replace:
-    path: "{{ node_data_directory }}/config.json"
+    path: "{{ node_data_directory }}config.json"
     regexp: '"DNSBootstrapID": "<network>.algorand.network",'
     replace: '"DNSBootstrapID": "<network>.algodev.network",'
   become: yes

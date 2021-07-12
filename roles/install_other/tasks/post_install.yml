@@ -1,7 +1,7 @@
 ---
 - name: add Algorand environment variables exporting to admin user's .bash_profile
   lineinfile:
-    dest: "{{ admin_home_directory }}/.bash_profile"
+    dest: "{{ admin_home_directory }}.bash_profile"
     line: "{{ item }}"
     state: present
     create: yes
@@ -15,7 +15,7 @@
 
 - name: add Algorand environment variables exporting to admin user's .zshrc
   lineinfile:
-    dest: "{{ admin_home_directory }}/.zshrc"
+    dest: "{{ admin_home_directory }}.zshrc"
     line: "{{ item }}"
     state: present
     create: yes
@@ -29,7 +29,7 @@
 
 - name: change systemd service directory in systemd-setup for openSUSE
   replace:
-    path: "{{ node_directory }}/systemd-setup.sh"
+    path: "{{ node_directory }}systemd-setup.sh"
     regexp: "> /lib/systemd/system/algorand@.service"
     replace: "> /usr/lib/systemd/system/algorand@.service"
   when: os_family == "Suse"

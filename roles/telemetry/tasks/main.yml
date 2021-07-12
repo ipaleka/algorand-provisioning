@@ -1,7 +1,7 @@
 ---
 - name: read the logging configuration file content for package manager
   ansible.builtin.slurp:
-    src: "{{ node_directory }}/.algorand/logging.config"
+    src: "{{ node_directory }}.algorand/logging.config"
   become: yes
   register: logging_configuration_package_manager
   when: not updater_install
@@ -9,7 +9,7 @@
 
 - name: read the logging configuration file content for updater
   ansible.builtin.slurp:
-    src: "{{ admin_home_directory }}/.algorand/logging.config"
+    src: "{{ admin_home_directory }}.algorand/logging.config"
   register: logging_configuration_updater
   when: updater_install
   tags: telemetry

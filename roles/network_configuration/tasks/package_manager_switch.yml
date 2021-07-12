@@ -1,8 +1,8 @@
 ---
 - name: copy {{ algorand_network }} genesis file to data directory
   copy:
-    src: "{{ node_data_directory }}/genesis/{{ algorand_network }}/genesis.json"
-    dest: "{{ node_data_directory }}/genesis.json"
+    src: "{{ node_data_directory }}genesis/{{ algorand_network }}/genesis.json"
+    dest: "{{ node_data_directory }}genesis.json"
     remote_src: yes
     owner: "{{ goal_user }}"
     group: "{{ goal_user_group }}"
@@ -30,9 +30,9 @@
   delay: 5
   tags: switch-network
 
-- name: wait until the file {{ node_data_directory }}/algod.net is present
+- name: wait until algod.net is present in the node data directory
   wait_for:
-    path: "{{ node_data_directory }}/algod.net"
+    path: "{{ node_data_directory }}algod.net"
   become: yes
   tags: switch-network
 

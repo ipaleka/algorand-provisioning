@@ -3,8 +3,8 @@
   set_fact:
     goal_user: algorand
     goal_user_group: algorand
-    node_directory: /var/lib/algorand
-    node_data_directory: /var/lib/algorand
+    node_directory: /var/lib/algorand/
+    node_data_directory: /var/lib/algorand/
     goal_executable: "goal"
     diagcfg_executable: "diagcfg"
   tags: algorand-node-setup
@@ -32,7 +32,7 @@
 
 - name: add Algorand environment variables exporting to admin user's .bash_profile
   lineinfile:
-    dest: "{{ admin_home_directory }}/.bash_profile"
+    dest: "{{ admin_home_directory }}.bash_profile"
     line: 'export ALGORAND_DATA="{{ node_data_directory }}"'
     state: present
     create: yes
