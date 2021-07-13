@@ -23,13 +23,13 @@
   hosts: all
   remote_user: "{{ admin_user }}"
   roles:
-     - role: distrochecks
+     - role: distro_checks
 
 - name: create admin_user
   hosts: all:!windows:!macos
   remote_user: "{{ superuser if superuser is defined else 'root' }}"
   roles:
-    - role: createuser
+    - role: create_user
       when: admin_user_ping.unreachable is defined
 
 # INSTALL NODE AND SERVICE

@@ -4,7 +4,7 @@
     name: "{{ admin_user_group }}"
     state: present
   become: yes
-  tags: createuser
+  tags: create-user
 
 - name: create admin_user
   user:
@@ -15,7 +15,7 @@
     shell: /bin/bash
   become: yes
   when: os_distribution != "Alpine"
-  tags: createuser
+  tags: create-user
 
 - name: create admin_user in Alpine (user password required)
   user:
@@ -28,7 +28,7 @@
     shell: /bin/bash
   become: yes
   when: os_distribution == "Alpine"
-  tags: createuser
+  tags: create-user
 
 - name: allow user to have passwordless sudo
   lineinfile:
@@ -36,7 +36,7 @@
     line: '{{ admin_user }} ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
   become: yes
-  tags: createuser
+  tags: create-user
 
 - name: check if Ansible temporary user directory exists
   file:
@@ -46,7 +46,7 @@
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
   become: yes
-  tags: createuser
+  tags: create-user
 
 - name: set up authorized keys for the user
   authorized_key:
@@ -57,9 +57,9 @@
   with_file:
     - "{{ local_path_to_public_key }}"
   ignore_errors: yes
-  tags: createuser
+  tags: create-user
 
 - name: set created admin_user as ansible_user
   set_fact:
     ansible_user: "{{ admin_user }}"
-  tags: createuser
+  tags: create-user

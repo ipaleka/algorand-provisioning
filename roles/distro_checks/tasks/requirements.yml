@@ -8,7 +8,7 @@
     - sudo
     - curl
   when: os_distribution == "Debian"
-  tags: distrochecks, requirements
+  tags: distro-checks, requirements
 
 - name: ensure requirements are installed in Alpine
   apk:
@@ -21,7 +21,7 @@
     - curl
     - libc6-compat
   when: os_distribution == "Alpine"
-  tags: distrochecks, requirements
+  tags: distro-checks, requirements
 
 - name: ensure crontab is installed in Fedora
   dnf:
@@ -29,7 +29,7 @@
     state: present
   become: yes
   when: os_distribution == "Fedora"
-  tags: distrochecks, requirements, update-setup
+  tags: distro-checks, requirements, update-setup
 
 - name: ensure tar is installed in AlmaLinux
   yum:
@@ -37,7 +37,7 @@
     state: present
   become: yes
   when: os_distribution == "AlmaLinux"
-  tags: distrochecks, requirements
+  tags: distro-checks, requirements
 
 # https://github.com/georchestra/ansible/issues/55#issuecomment-588313638
 #
@@ -47,7 +47,7 @@
     state: present
   become: yes
   when: os_family == "Debian"
-  tags: distrochecks, requirements
+  tags: distro-checks, requirements
 
 - name: ensure setfacl tool is present in RedHat-based distributions
   dnf:
@@ -55,7 +55,7 @@
     state: present
   become: yes
   when: os_family == "RedHat" and not (os_distribution == "CentOS" and os_version is version("8", "<"))
-  tags: distrochecks, requirements
+  tags: distro-checks, requirements
 
 - name: ensure setfacl tool is present in CentOS 7
   yum:
@@ -63,7 +63,7 @@
     state: present
   become: yes
   when: os_distribution == "CentOS" and os_version is version("8", "<")
-  tags: distrochecks, requirements
+  tags: distro-checks, requirements
 
 - name: ensure setfacl tool is present in SUSE-based distributions
   zypper:
@@ -71,7 +71,7 @@
     state: present
   become: yes
   when: os_family == "Suse"
-  tags: distrochecks, requirements
+  tags: distro-checks, requirements
 
 - name: ensure setfacl tool is present in Arch-based distributions
   pacman:
@@ -79,4 +79,4 @@
     state: present
   become: yes
   when: os_family == "Archlinux"
-  tags: distrochecks, requirements
+  tags: distro-checks, requirements

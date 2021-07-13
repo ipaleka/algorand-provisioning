@@ -15,4 +15,4 @@
     goal_user_group: "{{ admin_user_group }}"
     goal_executable: "./goal"
     diagcfg_executable: "./diagcfg"
-  tags: distrochecks
+  tags: distro-checks

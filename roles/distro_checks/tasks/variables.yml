@@ -5,7 +5,7 @@
 #     - "{{ hostvars[inventory_hostname].ansible_distribution }}"
 #     - "{{ hostvars[inventory_hostname].ansible_distribution_version }}"
 #     - "{{ hostvars[inventory_hostname].ansible_os_family }}"
-#   tags: distrochecks, variables
+#   tags: distro-checks, variables
 
 - name: set common OS and Algorand variables
   set_fact:
@@ -14,20 +14,20 @@
     os_version: "{{ ansible_distribution_version }}"
     goal_executable: "goal"
     diagcfg_executable: "diagcfg"
-  tags: distrochecks, variables
+  tags: distro-checks, variables
 
 - name: set variables specific to Linux
   set_fact:
     admin_home_directory: "/home/{{ admin_user }}/"
   when: not os_family in ("Darwin", "Windows")
-  tags: distrochecks, variables
+  tags: distro-checks, variables
 
 - name: set variables specific to Mac OS
   set_fact:
     admin_home_directory: "/Users/{{ admin_user }}/"
     admin_user_group: staff
   when: os_family == "Darwin"
-  tags: distrochecks, variables
+  tags: distro-checks, variables
 
 - name: set variables specific to MS Windows
   set_fact:
@@ -36,31 +36,31 @@
     node_data_directory: "{{ ansible_facts.env['ProgramData'] }}\\Algorand\\data\\"
     algorand_network_base: "{{ 'testnet' if algorand_network != 'mainnet' else 'mainnet' }}"
   when: os_family == "Windows"
-  tags: distrochecks, variables
+  tags: distro-checks, variables
 
 - name: set variable indicating should updater be used for node installing
   set_fact:
     updater_install: '{{ not use_package_manager or not (os_family in ("Debian", ) or (os_distribution == "CentOS" and os_version is version("8", "<"))) }}'
     # FIXME https://github.com/algorand/go-algorand/issues/1489#issuecomment-875033099
     # updater_install: '{{ not use_package_manager or not os_family in ("Debian", "RedHat", "Suse") }}'
-  tags: distrochecks, variables
+  tags: distro-checks, variables
 
 - name: set variable for node directory needs relocation
   set_fact:
     node_directory_relocated: "{{ updater_install and not os_family in ('Darwin', 'Windows') and node_directory.startswith('/home/') and ansible_selinux is defined and ansible_selinux and ansible_selinux.status == 'enabled' }}"
-  tags: distrochecks, variables
+  tags: distro-checks, variables
 
 - name: relocate node directory
   ansible.builtin.debug:
     msg: Node directory relocated out from /home/ and set to /opt/algorand_node because SELinux is enabled
   when: node_directory_relocated
-  tags: distrochecks, variables
+  tags: distro-checks, variables
 
 - name: relocate node directory from /home/ directory when SELinux is enabled
   set_fact:
     node_directory: "/opt/algorand_node/"
   when: node_directory_relocated
-  tags: distrochecks, variables
+  tags: distro-checks, variables
 
 # ansible_distribution (ansible_distribution_version) ansible_os_family
 
