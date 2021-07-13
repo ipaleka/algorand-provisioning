@@ -29,9 +29,9 @@
 - name: pre-set telemetry Boolean variables
   set_fact:
     telemetry_currently_enabled: "{{ telemetry_config['Enable'] }}"
-    telemetry_without_hostname: "{{ not use_hostname_for_telemetry and fixed_hostname_for_telemetry == '' }}"
+    telemetry_without_hostname: "{{ not use_hostname_for_telemetry and fixed_name_for_telemetry == '' }}"
     telemetry_current_empty_hostname: "{{ telemetry_config['Name'] == ' ' }}"
-    telemetry_current_fixed_hostname: "{{ telemetry_config['Name'] == fixed_hostname_for_telemetry }}"
+    telemetry_current_fixed_hostname: "{{ telemetry_config['Name'] == fixed_name_for_telemetry }}"
     telemetry_current_hostname: "{{ telemetry_config['Name'] == inventory_hostname }}"
   tags: telemetry
 
@@ -63,12 +63,12 @@
   tags: telemetry
 
 - name: provide fixed hostname for telemetry
-  shell: '{{ diagcfg_executable }} telemetry name -n "{{ fixed_hostname_for_telemetry }}"'
+  shell: '{{ diagcfg_executable }} telemetry name -n "{{ fixed_name_for_telemetry }}"'
   args:
     chdir: "{{ node_directory }}"
   become: yes
   become_user: "{{ goal_user }}"
-  when: enable_telemetry and not use_hostname_for_telemetry and fixed_hostname_for_telemetry != "" and not telemetry_current_fixed_hostname
+  when: enable_telemetry and not use_hostname_for_telemetry and fixed_name_for_telemetry != "" and not telemetry_current_fixed_hostname
   tags: telemetry
 
 - name: provide machine's hostname for telemetry

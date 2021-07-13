@@ -55,7 +55,7 @@
   become: yes
   become_user: "{{ admin_user }}"
   with_file:
-    - "{{ path_to_public_key }}"
+    - "{{ local_path_to_public_key }}"
   ignore_errors: yes
   tags: createuser
 

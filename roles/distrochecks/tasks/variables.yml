@@ -16,6 +16,12 @@
     diagcfg_executable: "diagcfg"
   tags: distrochecks, variables
 
+- name: set variables specific to Linux
+  set_fact:
+    admin_home_directory: "/home/{{ admin_user }}/"
+  when: not os_family in ("Darwin", "Windows")
+  tags: distrochecks, variables
+
 - name: set variables specific to Mac OS
   set_fact:
     admin_home_directory: "/Users/{{ admin_user }}/"
