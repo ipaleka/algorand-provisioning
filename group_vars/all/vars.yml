@@ -15,7 +15,7 @@ node_directory: "{{ admin_home_directory }}node/"
 node_data_directory: "{{ node_directory }}data/"
 
 # installation in Windows
-algorand_version: 2.7.1  # for retrieving Windows installation binary
+algorand_version: ""  # leave empty for the latest
 
 # Algorand network configuration
 algorand_network: "testnet"

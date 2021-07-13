@@ -1,4 +1,33 @@
 ---
+- name: retrieve the latest release file
+  win_get_url:
+    url: "https://api.github.com/repos/randlabs/algorand-windows-node/releases/latest"
+    dest: "{{ admin_home_directory }}latest.release"
+  register: latest_release_downloaded
+  changed_when: false  # as download count field always differs
+  when: algorand_version == ""
+  tags: algorand-node-setup
+
+- name: read the latest release file content
+  ansible.builtin.slurp:
+    src: "{{ admin_home_directory }}latest.release"
+  register: latest_release_file
+  when: algorand_version == ""
+  tags: algorand-node-setup
+
+- name: set the latest release content variable
+  set_fact:
+    latest_release_content: "{{ latest_release_file['content'] | b64decode }}"
+  when: algorand_version == ""
+  tags: algorand-node-setup
+
+- name: set the Algorand version variable
+  set_fact:
+    algorand_version: "{{ latest_release_content['tag_name'][1:] }}"
+  failed_when: latest_release_content["tag_name"][0] != "v"
+  when: algorand_version == ""
+  tags: algorand-node-setup
+
 - name: download Windows installation binary
   win_get_url:
     url: "https://github.com/randlabs/algorand-windows-node/releases/download/v{{ algorand_version }}/AlgorandNode-{{ algorand_version }}-{{ algorand_network_base }}_amd64.msi"
