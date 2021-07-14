@@ -14,7 +14,7 @@
     createhome: yes
     shell: /bin/bash
   become: yes
-  when: os_distribution != "Alpine"
+  when: os_family != "Alpine"
   tags: create-user
 
 - name: create admin_user in Alpine (user password required)
@@ -27,7 +27,7 @@
     createhome: yes
     shell: /bin/bash
   become: yes
-  when: os_distribution == "Alpine"
+  when: os_family == "Alpine"
   tags: create-user
 
 - name: allow user to have passwordless sudo
@@ -56,7 +56,6 @@
   become_user: "{{ admin_user }}"
   with_file:
     - "{{ local_path_to_public_key }}"
-  ignore_errors: yes
   tags: create-user
 
 - name: set created admin_user as ansible_user

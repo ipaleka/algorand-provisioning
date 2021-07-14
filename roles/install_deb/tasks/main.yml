@@ -59,6 +59,7 @@
     line: 'export ALGORAND_DATA="{{ node_data_directory }}"'
     state: present
     create: yes
-  become: yes
-  become_user: "{{ admin_user }}"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
   tags: algorand-node-setup

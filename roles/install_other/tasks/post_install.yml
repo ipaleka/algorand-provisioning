@@ -5,8 +5,9 @@
     line: "{{ item }}"
     state: present
     create: yes
-  become: yes
-  become_user: "{{ admin_user }}"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
   with_items:
     - 'export ALGORAND_DATA="{{ node_data_directory }}"'
     - 'export PATH="{{ node_directory }}:$PATH"'
@@ -19,18 +20,11 @@
     line: "{{ item }}"
     state: present
     create: yes
-  become: yes
-  become_user: "{{ admin_user }}"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
   with_items:
     - 'export ALGORAND_DATA="{{ node_data_directory }}"'
     - 'export PATH="{{ node_directory }}:$PATH"'
   when: os_family == "Darwin"
-  tags: algorand-node-setup
-
-- name: change systemd service directory in systemd-setup for openSUSE
-  replace:
-    path: "{{ node_directory }}systemd-setup.sh"
-    regexp: "> /lib/systemd/system/algorand@.service"
-    replace: "> /usr/lib/systemd/system/algorand@.service"
-  when: os_family == "Suse"
   tags: algorand-node-setup

@@ -1,0 +1,27 @@
+---
+- name: read the latest checkpoint file content
+  ansible.builtin.slurp:
+    src: "{{ node_directory }}latest.catchpoint"
+  register: latest_catchpoint_file
+  listen: "catchpoint downloaded"
+
+- name: set the latest checkpoint variable
+  set_fact:
+    latest_catchpoint: "{{ latest_catchpoint_file['content'] | b64decode | trim }}"
+  listen: "catchpoint downloaded"
+
+- name: catchup node using the latest checkpoint value
+  command: "{{ goal_executable }} node catchup {{ latest_catchpoint }} -d {{ node_data_directory }}"
+  args:
+    chdir: "{{ node_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
+  when: os_family != "Windows"
+  listen: "catchpoint downloaded"
+
+- name: catchup node using the latest checkpoint value
+  win_command: "{{ goal_executable }} node catchup {{ latest_catchpoint }} -d {{ node_data_directory }}{{ algorand_network_base }}"
+  args:
+    chdir: "{{ node_directory }}{{ algorand_network_base }}"
+  when: os_family == "Windows"
+  listen: "catchpoint downloaded"

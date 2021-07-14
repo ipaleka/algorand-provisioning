@@ -1,5 +1,5 @@
 ---
-- name: copy {{ algorand_network }} genesis file to data directory
+- name: copy Algorand network genesis file to data directory
   copy:
     src: "{{ node_data_directory }}genesis/{{ algorand_network }}/genesis.json"
     dest: "{{ node_data_directory }}genesis.json"
@@ -7,40 +7,6 @@
     owner: "{{ goal_user }}"
     group: "{{ goal_user_group }}"
     mode: 0644
-  register: network_switched
   become: yes
-  tags: switch-network
-
-- name: restart Algorand service
-  systemd:
-    name: algorand
-    state: restarted
-  become: yes
-  when: network_switched.changed
-  tags: switch-network
-
-- name: ensure Algorand service is in a running state
-  service:
-    name: algorand
-    state: started
-  become: yes
-  register: algorand_service_active
-  until: algorand_service_active.status.ActiveState == "active"
-  retries: 5
-  delay: 5
-  tags: switch-network
-
-- name: wait until algod.net is present in the node data directory
-  wait_for:
-    path: "{{ node_data_directory }}algod.net"
-  become: yes
-  tags: switch-network
-
-- name: ensure Algorand runs in {{ algorand_network }}
-  command: "goal node status -d {{ node_data_directory }}"
-  become: yes
-  become_user: "{{ goal_user }}"
-  register: node_status
-  failed_when: 'algorand_network|string not in node_status.stdout'
-  changed_when: false
+  notify: "network switched (package manager)"
   tags: switch-network

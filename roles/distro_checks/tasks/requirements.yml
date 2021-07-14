@@ -20,7 +20,7 @@
     - sudo
     - curl
     - libc6-compat
-  when: os_distribution == "Alpine"
+  when: os_family == "Alpine"
   tags: distro-checks, requirements
 
 - name: ensure crontab is installed in Fedora

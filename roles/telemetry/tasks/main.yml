@@ -36,7 +36,7 @@
   tags: telemetry
 
 - name: disable telemetry
-  shell: "{{ diagcfg_executable }} telemetry disable"
+  command: "{{ diagcfg_executable }} telemetry disable"
   args:
     chdir: "{{ node_directory }}"
   become: yes
@@ -45,7 +45,7 @@
   tags: telemetry
 
 - name: enable telemetry
-  shell: "{{ diagcfg_executable }} telemetry enable"
+  command: "{{ diagcfg_executable }} telemetry enable"
   args:
     chdir: "{{ node_directory }}"
   become: yes
@@ -54,7 +54,7 @@
   tags: telemetry
 
 - name: provide empty hostname for telemetry
-  shell: '{{ diagcfg_executable }} telemetry name -n " "'
+  command: '{{ diagcfg_executable }} telemetry name -n " "'
   args:
     chdir: "{{ node_directory }}"
   become: yes
@@ -63,16 +63,16 @@
   tags: telemetry
 
 - name: provide fixed hostname for telemetry
-  shell: '{{ diagcfg_executable }} telemetry name -n "{{ fixed_name_for_telemetry }}"'
+  command: '{{ diagcfg_executable }} telemetry name -n "{{ fixed_name_for_telemetry }}"'
   args:
     chdir: "{{ node_directory }}"
   become: yes
   become_user: "{{ goal_user }}"
-  when: enable_telemetry and not use_hostname_for_telemetry and fixed_name_for_telemetry != "" and not telemetry_current_fixed_hostname
+  when: enable_telemetry and not use_hostname_for_telemetry and fixed_name_for_telemetry | length > 0 and not telemetry_current_fixed_hostname
   tags: telemetry
 
 - name: provide machine's hostname for telemetry
-  shell: '{{ diagcfg_executable }} telemetry name -n "{{ inventory_hostname }}"'
+  command: '{{ diagcfg_executable }} telemetry name -n "{{ inventory_hostname }}"'
   args:
     chdir: "{{ node_directory }}"
   become: yes

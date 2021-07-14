@@ -6,24 +6,21 @@
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
     mode: 0755
-  register: updater_downloaded
+  notify:
+    - "download updater"
+    - "setup service (updater)"
   tags: algorand-node-setup
 
-- name: copy newer updater script
-  copy:
-    src: "{{ node_directory }}update_by_ansible.sh"
-    dest: "{{ node_directory }}update.sh"
-    remote_src: yes
-    owner: "{{ admin_user }}"
-    group: "{{ admin_user_group }}"
-    mode: 0755
-  when: updater_downloaded.changed
-  register: updater_file
+- name: escape service name
+  command: "systemd-escape {{ node_data_directory }}"
+  become: yes
+  register: systemd_escape_directory
+  changed_when: false
+  when: os_family not in ("Darwin", "Alpine")
   tags: algorand-node-setup
 
-- name: run the installer
-  shell: "yes 'y' | ./update.sh -i -c stable -p {{ node_directory }} -d {{ node_data_directory }} -n"
-  args:
-    chdir: "{{ node_directory }}"
-  when: updater_file.changed
+- name: set escaped service name as variable
+  set_fact:
+    systemd_escaped_service_name: "{{ systemd_escape_directory.stdout }}"
+  when: os_family not in ("Darwin", "Alpine")
   tags: algorand-node-setup

@@ -1,5 +1,5 @@
 ---
-- name: copy {{ algorand_network }} genesis file to data directory
+- name: copy Algorand network genesis file to data directory
   copy:
     src: "{{ node_directory }}genesisfiles/{{ algorand_network }}/genesis.json"
     dest: "{{ node_data_directory }}genesis.json"
@@ -7,41 +7,6 @@
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
     mode: 0644
-  register: network_switched
-  tags: switch-network
-
-- name: restart Algorand systemd service
-  shell: "systemctl restart algorand@$(systemd-escape {{ node_data_directory }})"
   become: yes
-  when: network_switched.changed and not (os_family in ("Darwin", "Alpine"))
-  tags: switch-network
-
-- name: restart Algorand node daemon
-  community.general.launchd:
-    name: org.algorand.daemon
-    state: restarted
-  become: yes
-  when: network_switched.changed and os_family == "Darwin"
-  tags: switch-network
-
-- name: restart Algorand node service
-  service:
-    name: algorand
-    state: restarted
-  become: yes
-  when: network_switched.changed and os_family == "Alpine"
-  tags: switch-network
-
-- name: wait until algod.net is present in the node data directory
-  wait_for:
-    path: "{{ node_data_directory }}algod.net"
-  tags: switch-network
-
-- name: ensure Algorand runs in {{ algorand_network }}
-  shell: "{{ goal_executable }} node status -d {{ node_data_directory }}"
-  args:
-    chdir: "{{ node_directory }}"
-  register: node_status
-  failed_when: 'algorand_network|string not in node_status.stdout'
-  changed_when: false
+  notify: "network switched (updater)"
   tags: switch-network

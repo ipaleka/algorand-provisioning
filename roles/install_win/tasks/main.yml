@@ -5,27 +5,27 @@
     dest: "{{ admin_home_directory }}latest.release"
   register: latest_release_downloaded
   changed_when: false  # as download count field always differs
-  when: algorand_version == ""
+  when: algorand_version | length == 0
   tags: algorand-node-setup
 
 - name: read the latest release file content
   ansible.builtin.slurp:
     src: "{{ admin_home_directory }}latest.release"
   register: latest_release_file
-  when: algorand_version == ""
+  when: algorand_version | length == 0
   tags: algorand-node-setup
 
 - name: set the latest release content variable
   set_fact:
     latest_release_content: "{{ latest_release_file['content'] | b64decode }}"
-  when: algorand_version == ""
+  when: algorand_version | length == 0
   tags: algorand-node-setup
 
 - name: set the Algorand version variable
   set_fact:
     algorand_version: "{{ latest_release_content['tag_name'][1:] }}"
   failed_when: latest_release_content["tag_name"][0] != "v"
-  when: algorand_version == ""
+  when: algorand_version | length == 0
   tags: algorand-node-setup
 
 - name: download Windows installation binary

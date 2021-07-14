@@ -5,7 +5,7 @@
   tags: network-configuration
 
 - name: register node status as variable
-  shell: "{{ goal_executable }} node status -d {{ node_data_directory }}"
+  command: "{{ goal_executable }} node status -d {{ node_data_directory }}"
   args:
     chdir: "{{ node_directory }}"
   become: yes

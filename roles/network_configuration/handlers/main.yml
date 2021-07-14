@@ -1,0 +1,71 @@
+---
+- name: restart Algorand systemd service (package manager)
+  systemd:
+    name: algorand
+    state: restarted
+  become: yes
+  listen: "network switched (package manager)"
+
+- name: restart Algorand systemd service (updater)
+  systemd:
+    name: "algorand@{{ systemd_escaped_service_name }}"
+    state: restarted
+  become: yes
+  when: not os_family in ("Darwin", "Alpine")
+  listen: "network switched (updater)"
+
+- name: restart Algorand node daemon
+  community.general.launchd:
+    name: org.algorand.daemon
+    state: restarted
+  become: yes
+  when: os_family == "Darwin"
+  listen: "network switched (updater)"
+
+- name: restart Algorand OpenRC service
+  service:
+    name: algorand
+    state: restarted
+  become: yes
+  when: os_family == "Alpine"
+  listen: "network switched (updater)"
+
+# - name: ensure Algorand service is in a running state
+#   service:
+#     name: algorand
+#     state: started
+#   become: yes
+#   register: algorand_service_active
+#   until: algorand_service_active.status.ActiveState == "active"
+#   retries: 5
+#   delay: 5
+#   listen: "network switched (package manager)"
+
+- name: wait until algod.net is present in the node data directory
+  wait_for:
+    path: "{{ node_data_directory }}algod.net"
+  become: yes
+  listen: "network switched (package manager)"
+
+- name: ensure Algorand runs in "algorand_network"
+  command: "goal node status -d {{ node_data_directory }}"
+  become: yes
+  become_user: "{{ goal_user }}"
+  register: node_status
+  failed_when: 'algorand_network|string not in node_status.stdout'
+  changed_when: false
+  listen: "network switched (package manager)"
+
+- name: wait until algod.net is present in the node data directory
+  wait_for:
+    path: "{{ node_data_directory }}algod.net"
+  listen: "network switched (updater)"
+
+- name: ensure Algorand runs in "algorand_network"
+  command: "{{ goal_executable }} node status -d {{ node_data_directory }}"
+  args:
+    chdir: "{{ node_directory }}"
+  register: node_status
+  failed_when: 'algorand_network|string not in node_status.stdout'
+  changed_when: false
+  listen: "network switched (updater)"
