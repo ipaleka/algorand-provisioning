@@ -1,4 +1,74 @@
 ---
-- include: pre_install.yml
-- include: install.yml
-- include: post_install.yml
+- name: check if node directory exists
+  file:
+    path: "{{ node_directory }}"
+    state: directory
+    mode: 0755
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+  become: yes
+  tags: algorand-node-setup, install-other
+
+- name: set Algorand executables shell command variables
+  set_fact:
+    goal_user: "{{ admin_user }}"
+    goal_user_group: "{{ admin_user_group }}"
+    goal_executable: "./goal"
+    diagcfg_executable: "./diagcfg"
+  tags: algorand-node-setup, install-other
+
+- name: download the updater script
+  get_url:
+    url: https://raw.githubusercontent.com/algorand/go-algorand-doc/master/downloads/installers/update.sh
+    dest: "{{ node_directory }}update_by_ansible.sh"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0755
+  notify:
+    - "download updater"
+    - "setup service (updater)"
+  tags: algorand-node-setup, install-other
+
+- name: escape service name
+  command: "systemd-escape {{ node_data_directory }}"
+  become: yes
+  register: systemd_escape_directory
+  changed_when: false
+  when: os_family not in ("Darwin", "Alpine")
+  tags: algorand-node-setup, install-other
+
+- name: set escaped service name as variable
+  set_fact:
+    systemd_escaped_service_name: "{{ systemd_escape_directory.stdout }}"
+  when: os_family not in ("Darwin", "Alpine")
+  tags: algorand-node-setup, install-other
+
+- name: add Algorand environment variables exporting to admin user's .bash_profile
+  lineinfile:
+    dest: "{{ admin_home_directory }}.bash_profile"
+    line: "{{ item }}"
+    state: present
+    create: yes
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
+  with_items:
+    - 'export ALGORAND_DATA="{{ node_data_directory }}"'
+    - 'export PATH="{{ node_directory }}:$PATH"'
+  when: os_family != "Darwin"
+  tags: algorand-node-setup, install-other
+
+- name: add Algorand environment variables exporting to admin user's .zshrc
+  lineinfile:
+    dest: "{{ admin_home_directory }}.zshrc"
+    line: "{{ item }}"
+    state: present
+    create: yes
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
+  with_items:
+    - 'export ALGORAND_DATA="{{ node_data_directory }}"'
+    - 'export PATH="{{ node_directory }}:$PATH"'
+  when: os_family == "Darwin"
+  tags: algorand-node-setup, install-other

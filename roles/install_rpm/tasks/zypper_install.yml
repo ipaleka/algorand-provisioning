@@ -12,7 +12,7 @@
     description: Algorand node
     repo: https://releases.algorand.com/rpm/stable/algorand.repo
   become: yes
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, zypper-install
 
 - name: install Algorand node and devtools
   zypper:
@@ -20,7 +20,7 @@
     state: present
   become: yes
   when: install_algorand_devtools
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, zypper-install
 
 - name: install Algorand node without devtools
   dnf:
@@ -28,4 +28,4 @@
     state: present
   become: yes
   when: not install_algorand_devtools
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, zypper-install

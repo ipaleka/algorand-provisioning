@@ -5,14 +5,14 @@
     goal_user_group: algorand
     node_directory: /var/lib/algorand/
     node_data_directory: /var/lib/algorand/
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm
 
 - name: add Algorand rpm-key
   ansible.builtin.rpm_key:
     key: https://releases.algorand.com/rpm/rpm_algorand.pub
     state: present
   become: yes
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm
 
 - include: dnf_install.yml
   when: os_family == "RedHat" and not (os_distribution == "CentOS" and os_version is version("8", "<"))
@@ -26,7 +26,7 @@
 - name: ensure Algorand node installation was successful
   command: algod -v
   changed_when: false
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm
 
 - name: add Algorand environment variables exporting to admin user's .bash_profile
   lineinfile:
@@ -37,4 +37,4 @@
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
     mode: 0644
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm

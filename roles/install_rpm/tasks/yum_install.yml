@@ -6,7 +6,7 @@
     file: algorand
     baseurl: https://releases.algorand.com/rpm/stable
   become: yes
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, yum-install
 
 - name: install Algorand node and devtools
   yum:
@@ -14,7 +14,7 @@
     state: present
   become: yes
   when: install_algorand_devtools
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, yum-install
 
 - name: install Algorand node without devtools
   yum:
@@ -22,7 +22,7 @@
     state: present
   become: yes
   when: not install_algorand_devtools
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, yum-install
 
 - name: ensure Algorand service is enabled and started
   systemd:
@@ -30,4 +30,4 @@
     state: started
     enabled: yes
   become: yes
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, yum-install

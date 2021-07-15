@@ -14,7 +14,7 @@
     file: algorand
     baseurl: https://releases.algorand.com/rpm/stable
   become: yes
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, dnf-install
 
 - name: install Algorand node and devtools
   dnf:
@@ -22,7 +22,7 @@
     state: present
   become: yes
   when: install_algorand_devtools
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, dnf-install
 
 - name: install Algorand node without devtools
   dnf:
@@ -30,4 +30,4 @@
     state: present
   become: yes
   when: not install_algorand_devtools
-  tags: algorand-node-setup
+  tags: algorand-node-setup, install-rpm, dnf-install

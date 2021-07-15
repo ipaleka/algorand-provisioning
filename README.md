@@ -154,15 +154,28 @@ Use your package manager to remove the Algorand node installed by the package ma
 ```bash
 apt-get remove algorand algorand-devtools
 ```
+Remove logs and all other data with:
+
+```bash
+sudo rm -rf /var/lib/algorand/
+```
 
 If you used the updater script to install the Algorand node, you may remove it with the following commands (it's implied your Algorand node has been installed in `/home/algonaut/node` directory):
 
 ```bash
-$ sudo systemctl disable algorand@$(systemd-escape /home/algonaut/node/data)
 $ sudo systemctl stop algorand@$(systemd-escape /home/algonaut/node/data)
+$ sudo systemctl disable algorand@$(systemd-escape /home/algonaut/node/data)
 $ sudo rm /lib/systemd/system/algorand@.service
 rm -r /home/algonaut/node/
 ```
+
+Remove Algorand node's environment variables by deleting the following lines from your `~/.bash_profile`:
+
+```bash
+export ALGORAND_DATA="/home/algonaut/node/data/"
+export PATH="/home/algonaut/node/:$PATH"
+```
+
 
 # Troubleshooting
 
