@@ -2,6 +2,8 @@
 
 This repository provides an Ansible playbook and accompanying roles used for idempotent provisioning of the Algorand node on all the major desktop and server platforms.
 
+It allows CI/CD process for your applications based on the Algorand blockchain. In the future, this repository will contain Ansible roles for provisioning of the [Indexer](https://github.com/algorand/indexer) and the [Sandbox](https://github.com/algorand/sandbox) too.
+
 
 # Requirements
 
