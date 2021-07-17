@@ -13,6 +13,7 @@ alpine ansible_host=192.168.1.93
 ubuntu18 ansible_host=192.168.1.94
 ubuntu21 ansible_host=192.168.1.95
 debian11 ansible_host=192.168.1.96
+solus ansible_host=192.168.1.97
 
 [macos]
 catalina ansible_host=192.168.1.84

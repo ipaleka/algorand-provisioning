@@ -28,7 +28,7 @@
     name: cronie
     state: present
   become: yes
-  when: os_distribution == "Fedora"
+  when: os_distribution == "Fedora" and not systemd_timer_update
   tags: distro-checks, requirements, update-setup
 
 - name: ensure tar is installed in AlmaLinux

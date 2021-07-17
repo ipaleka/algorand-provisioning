@@ -1,0 +1,10 @@
+[Unit]
+Description=Algorand node update
+Wants=algorand-update.timer
+
+[Service]
+Type=oneshot
+ExecStart={{ node_directory }}update.sh -d {{ node_data_directory }}
+
+[Install]
+WantedBy=multi-user.target

@@ -15,12 +15,12 @@
     chdir: "{{ node_directory }}"
   listen: "download updater"
 
-- name: change systemd service directory in systemd-setup for openSUSE
+- name: change systemd service directory in systemd-setup to /usr/lib/
   replace:
     path: "{{ node_directory }}systemd-setup.sh"
     regexp: "> /lib/systemd/system/algorand@.service"
     replace: "> /usr/lib/systemd/system/algorand@.service"
-  when: os_family == "Suse"
+  when: os_family in ("Suse", "Solus")
   listen: "download updater"
 
 - name: create Algorand node systemd service

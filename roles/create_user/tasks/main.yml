@@ -14,10 +14,10 @@
     createhome: yes
     shell: /bin/bash
   become: yes
-  when: os_family != "Alpine"
+  when: os_family not in ("Alpine", "Solus")
   tags: create-user
 
-- name: create admin_user in Alpine (user password required)
+- name: create admin_user (user password required)
   user:
     name: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
@@ -27,7 +27,7 @@
     createhome: yes
     shell: /bin/bash
   become: yes
-  when: os_family == "Alpine"
+  when: os_family in ("Alpine", "Solus")
   tags: create-user
 
 - name: allow user to have passwordless sudo

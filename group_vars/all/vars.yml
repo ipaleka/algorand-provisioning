@@ -13,6 +13,7 @@ install_algorand_devtools: true
 # installation by updater script
 node_directory: "{{ admin_home_directory }}node/"
 node_data_directory: "{{ node_directory }}data/"
+systemd_timer_update: false
 
 # installation in Windows
 algorand_version: ""  # leave empty for the latest

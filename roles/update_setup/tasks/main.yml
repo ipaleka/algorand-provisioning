@@ -2,10 +2,26 @@
 - name: create daily update check cronjob
   cron:
     weekday: "*"
-    hour: "22"
+    hour: "5"
     minute: "30"
     name: "Algorand node update (daily schedule)"
     job: ": Algorand node update ; {{ node_directory }}update.sh -d {{ node_data_directory }} > {{ node_directory }}update.log 2>&1"
   become: yes
   become_user: "{{ admin_user }}"
+  when: os_family not in ("Darwin", "Alpine") and not (systemd_timer_update or os_family == "Solus")
+  tags: update-setup
+
+- name: create Algorand node daily update check systemd timer
+  template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - algorand-update.timer
+    - algorand-update.service
+  become: yes
+  when: os_family not in ("Darwin", "Alpine") and (systemd_timer_update or os_family == "Solus")
+  notify: "daily update timer"
   tags: update-setup

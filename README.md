@@ -198,6 +198,7 @@ The playbook has been tested on the following platforms:
 - Manjaro 21.0.7
 - Mageia 8
 - Alpine 3.14.0
+- Solus 4.3
 - Mac OS X 10.15.7 (Catalina)
 - Microsoft Windows 10 20H2
 

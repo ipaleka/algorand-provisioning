@@ -30,6 +30,8 @@ all:
       ansible_host: 192.168.1.95
     debian11:
       ansible_host: 192.168.1.96
+    solus:
+      ansible_host: 192.168.1.97
   vars:
     ansible_python_interpreter: /usr/bin/python3
     # superuser: root
