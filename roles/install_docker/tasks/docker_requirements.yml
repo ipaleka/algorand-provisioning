@@ -1,0 +1,34 @@
+---
+- name: ensure requirements are installed in Debian-based systems
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg
+    - lsb-release
+  when: os_family == "Debian"
+  tags: install-docker
+
+- name: ensure requirements are installed in Fedora
+  dnf:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - dnf-plugins-core
+  when: os_distribution == "Fedora"
+  tags: install-docker
+
+- name: ensure requirements are installed in CentOS
+  dnf:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - yum-utils
+  when: os_distribution == "CentOS"
+  tags: install-docker

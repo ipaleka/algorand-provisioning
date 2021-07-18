@@ -1,0 +1,23 @@
+---
+- name: enable and start Algorand Sandbox systemd service
+  systemd:
+    name: algorand-sandbox.service
+    state: started
+    enabled: yes
+  become: yes
+  when: os_family not in ("Darwin", "Alpine")
+  listen: "sandbox service"
+
+- name: stop Algorand Sandbox
+  command: "./sandbox down"
+  args:
+    chdir: "{{ sandbox_directory }}"
+  listen: "sandbox cloned"
+
+- name: start Algorand Sandbox
+  command: "./sandbox up"
+  args:
+    chdir: "{{ sandbox_directory }}"
+  register: node_status
+  failed_when: '"Genesis ID:" not in node_status.stdout'
+  listen: "sandbox cloned"

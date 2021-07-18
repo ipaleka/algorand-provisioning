@@ -1,0 +1,19 @@
+---
+- name: create Algorand Sandbox service
+  template:
+    src: algorand-sandbox.service
+    dest: /etc/systemd/system/algorand-sandbox.service
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  notify: "sandbox service"
+  tags: install-sandbox
+
+- name: clone Algorand Sandbox repository
+  git:
+    repo: https://github.com/algorand/sandbox.git
+    dest: "{{ sandbox_directory }}"
+    version: master
+  notify: "sandbox cloned"
+  tags: install-sandbox

@@ -1,0 +1,10 @@
+---
+# - name: reset ssh connection to allow user changes to affect 'current login user'
+#   meta: reset_connection
+#   listen: "reset ssh connection"
+
+- name: reset ssh connection to allow user changes to affect 'current login user'
+  shell: sleep 1; pkill -u {{ ansible_user }} sshd
+  async: 5
+  poll: 1
+  listen: "reset ssh connection"

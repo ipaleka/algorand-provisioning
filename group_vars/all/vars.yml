@@ -1,4 +1,5 @@
 ---
+## COMMON GLOBAL VARIABLES
 # default administrator user on the host machine(s)
 admin_user: algonaut
 admin_user_group: "{{ admin_user }}"
@@ -6,6 +7,7 @@ admin_user_group: "{{ admin_user }}"
 # identity used to connect to host machine(s)
 local_path_to_public_key: ~/.ssh/id_rsa.pub
 
+## NODE
 # Algorand network configuration
 algorand_network: "testnet"
 fast_catchup: true
@@ -27,3 +29,7 @@ algorand_version: ""  # leave empty for the latest
 enable_telemetry: false
 use_hostname_for_telemetry: true
 fixed_name_for_telemetry: ""
+
+## SANDBOX
+docker_compose_version: 1.29.2
+sandbox_directory: "{{ admin_home_directory }}sandbox/"

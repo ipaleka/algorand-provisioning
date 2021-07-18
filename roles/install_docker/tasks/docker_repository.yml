@@ -1,0 +1,57 @@
+---
+- name: download Docker GPG key in Debian-based systems
+  get_url:
+    url: "https://download.docker.com/linux/{{ os_distribution|lower }}/gpg"
+    dest: "{{ admin_home_directory }}{{ os_distribution|lower }}.gpg"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
+  when: os_family == "Debian"
+  tags: install-docker
+
+- name: add Docker GPG key in Debian-based systems
+  shell: "set -o pipefail && cat {{ admin_home_directory }}{{ os_distribution|lower }}.gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
+  args:
+    chdir: "{{ admin_home_directory }}"
+    creates: /usr/share/keyrings/docker-archive-keyring.gpg
+    executable: /bin/bash
+  become: yes
+  when: os_family == "Debian"
+  tags: install-docker
+
+- name: add Docker engine repository in Debian-based systems
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/{{ os_distribution|lower }} {{ ansible_distribution_release }} stable"
+    filename: docker
+    state: present
+  become: yes
+  when: os_family == "Debian"
+  tags: install-docker
+
+- name: add Docker engine repository in Fedora
+  ansible.builtin.yum_repository:
+    name: docker-ce
+    description: Docker engine
+    file: docker-ce
+    baseurl: https://download.docker.com/linux/fedora
+  become: yes
+  when: os_distribution == "Fedora"
+  tags: install-docker
+
+- name: add Docker engine repository in CentOS
+  ansible.builtin.yum_repository:
+    name: docker-ce
+    description: Docker engine
+    file: docker-ce
+    baseurl: https://download.docker.com/linux/centos
+  become: yes
+  when: os_distribution == "CentOS"
+  tags: install-docker
+
+- name: add Docker engine repository in openSUSE
+  community.general.zypper_repository:
+    description: Docker engine
+    repo: https://download.docker.com/linux/sles/docker-ce.repo
+  become: yes
+  when: os_family == "Suse"
+  tags: install-docker

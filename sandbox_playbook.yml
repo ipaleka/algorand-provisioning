@@ -1,0 +1,24 @@
+---
+# SETUP
+- name: setup user and distro information
+  import_playbook: setup_playbook.yml
+
+# INSTALL SANDBOX
+- name: install Algorand Sandbox
+  hosts: all:!windows:!macos
+  remote_user: "{{ admin_user }}"
+  roles:
+    - role: install_docker
+    - role: sandbox
+
+# # POST-INSTALL CONFIGURATION
+# - name: node configuration
+#   hosts: all
+#   remote_user: "{{ admin_user }}"
+#   roles:
+#     - role: network_configuration
+#       when: os_family != "Windows"
+#     - role: node_sync
+#       when: fast_catchup
+#     - role: telemetry
+#       when: os_family != "Windows"

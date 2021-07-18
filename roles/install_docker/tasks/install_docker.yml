@@ -1,0 +1,53 @@
+---
+- name: install Docker engine in Debian-based systems
+  apt:
+    name: docker-ce
+    state: present
+  become: yes
+  when: os_family == "Debian"
+  tags: install-docker
+
+- name: install Docker engine in Fedora
+  dnf:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - docker-ce
+    # - docker-ce-cli
+    # - containerd.io
+  when: os_distribution == "Fedora"
+  tags: install-docker
+
+- name: install Docker engine in CentOS
+  yum:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - docker-ce
+    # - docker-ce-cli
+    # - containerd.io
+  when: os_distribution == "CentOS"
+  tags: install-docker
+
+- name: install Docker engine in openSUSE
+  zypper:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - docker-ce
+    # - docker-ce-cli
+    # - containerd.io
+  when: os_family == "Suse"
+  tags: install-docker
+
+- name: add admin user to the docker group
+  user:
+    name: "{{ admin_user }}"
+    groups: [docker]
+    append: yes
+  become: yes
+  notify: "reset ssh connection"
+  tags: install-docker

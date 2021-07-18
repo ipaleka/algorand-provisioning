@@ -1,0 +1,14 @@
+[Unit]
+Description=Algorand Sandbox service
+After=docker.service
+Requires=docker.service
+
+[Service]
+User={{ admin_user }}
+Group={{ admin_user_group }}
+Restart=on-failure
+WorkingDirectory={{ sandbox_directory }}
+ExecStart={{ sandbox_directory }}sandbox up
+
+[Install]
+WantedBy=multi-user.target

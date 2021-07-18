@@ -1,0 +1,5 @@
+---
+- include: docker_requirements.yml
+- include: docker_repository.yml
+- include: install_docker.yml
+- include: install_docker_compose.yml
