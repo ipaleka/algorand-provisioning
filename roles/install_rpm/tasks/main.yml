@@ -7,6 +7,12 @@
     node_data_directory: /var/lib/algorand/
   tags: algorand-node-setup, install-rpm
 
+- name: change node data directory variable if applicable
+  set_fact:
+    node_data_directory: "{{ node_data_directory[:-1] + '_' + algorand_network + '/' }}"
+  when: not common_data_directory and algorand_network != 'mainnet'
+  tags: algorand-node-setup, install-rpm
+
 - name: add Algorand rpm-key
   ansible.builtin.rpm_key:
     key: https://releases.algorand.com/rpm/rpm_algorand.pub
@@ -31,6 +37,7 @@
 - name: add Algorand environment variables exporting to admin user's .bash_profile
   lineinfile:
     dest: "{{ admin_home_directory }}.bash_profile"
+    regexp: "^export ALGORAND_DATA="
     line: 'export ALGORAND_DATA="{{ node_data_directory }}"'
     state: present
     create: yes

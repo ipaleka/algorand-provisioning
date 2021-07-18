@@ -15,6 +15,17 @@
     chdir: "{{ node_directory }}"
   listen: "download updater"
 
+- name: copy config.json.example file to node directory
+  copy:
+    src: "{{ node_data_directory }}config.json.example"
+    dest: "{{ node_directory }}config.json.example"
+    remote_src: yes
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
+    force: no
+  listen: "download updater"
+
 - name: change systemd service directory in systemd-setup to /usr/lib/
   replace:
     path: "{{ node_directory }}systemd-setup.sh"

@@ -45,6 +45,12 @@
     # updater_install: '{{ not use_package_manager or not os_family in ("Debian", "RedHat", "Suse") }}'
   tags: distro-checks, variables
 
+- name: change node data directory if applicable
+  set_fact:
+    node_data_directory: "{{ node_data_directory[:-1] + '_' + algorand_network + '/' }}"
+  when: not common_data_directory and algorand_network != 'mainnet' and os_family != "Windows"
+  tags: distro-checks, variables
+
 - name: set variable for node directory needs relocation
   set_fact:
     node_directory_relocated: "{{ updater_install and not os_family in ('Darwin', 'Windows') and node_directory.startswith('/home/') and ansible_selinux is defined and ansible_selinux and ansible_selinux.status == 'enabled' }}"

@@ -2,7 +2,7 @@
 - name: retrieve the latest catchpoint
   get_url:
     url: "https://algorand-catchpoints.s3.us-east-2.amazonaws.com/channel/{{ algorand_network }}/latest.catchpoint"
-    dest: "{{ node_directory }}latest.catchpoint"
+    dest: "{{ node_directory }}{{ algorand_network }}-latest.catchpoint"
     owner: "{{ goal_user }}"
     group: "{{ goal_user_group }}"
     mode: 0644
@@ -14,7 +14,7 @@
 - name: retrieve the latest catchpoint
   win_get_url:
     url: "https://algorand-catchpoints.s3.us-east-2.amazonaws.com/channel/{{ algorand_network }}/latest.catchpoint"
-    dest: "{{ node_directory }}latest.catchpoint"
+    dest: "{{ node_directory }}{{ algorand_network }}-latest.catchpoint"
   when: os_family == "Windows"
   notify: "catchpoint downloaded"
   tags: node-sync

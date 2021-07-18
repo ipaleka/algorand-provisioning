@@ -1,29 +1,20 @@
 ---
-- name: wait until algod.net is present in the node data directory
-  wait_for:
-    path: "{{ node_data_directory }}algod.net"
-  tags: network-configuration
-
-- name: register node status as variable
-  command: "{{ goal_executable }} node status -d {{ node_data_directory }}"
-  args:
-    chdir: "{{ node_directory }}"
+- name: check if node data directory exists
+  file:
+    path: "{{ node_data_directory }}"
+    state: directory
+    mode: 0755
+    owner: "{{ goal_user }}"
+    group: "{{ goal_user_group }}"
   become: yes
-  become_user: "{{ goal_user }}"
-  register: node_status_network
-  changed_when: false
-  tags: network-configuration
-
-- name: set network switching Boolean variable
-  set_fact:
-    need_network_switch: 'algorand_network|string not in node_status_network.stdout'
+  when: not common_data_directory
   tags: network-configuration
 
 - include: betanet_configuration.yml
-  when: need_network_switch and algorand_network == "betanet"
+  when: algorand_network == "betanet"
 
 - include: package_manager_switch.yml
-  when: need_network_switch and not updater_install
+  when: not updater_install
 
 - include: updater_switch.yml
-  when: need_network_switch and updater_install
+  when: updater_install

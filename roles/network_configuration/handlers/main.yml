@@ -3,6 +3,7 @@
   systemd:
     name: algorand
     state: restarted
+    daemon_reload: yes
   become: yes
   listen: "network switched (package manager)"
 
@@ -29,17 +30,6 @@
   become: yes
   when: os_family == "Alpine"
   listen: "network switched (updater)"
-
-# - name: ensure Algorand service is in a running state
-#   service:
-#     name: algorand
-#     state: started
-#   become: yes
-#   register: algorand_service_active
-#   until: algorand_service_active.status.ActiveState == "active"
-#   retries: 5
-#   delay: 5
-#   listen: "network switched (package manager)"
 
 - name: wait until algod.net is present in the node data directory
   wait_for:

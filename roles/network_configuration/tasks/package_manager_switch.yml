@@ -1,7 +1,7 @@
 ---
 - name: copy Algorand network genesis file to data directory
   copy:
-    src: "{{ node_data_directory }}genesis/{{ algorand_network }}/genesis.json"
+    src: "{{ node_directory }}genesis/{{ algorand_network }}/genesis.json"
     dest: "{{ node_data_directory }}genesis.json"
     remote_src: yes
     owner: "{{ goal_user }}"
@@ -9,4 +9,15 @@
     mode: 0644
   become: yes
   notify: "network switched (package manager)"
+  tags: switch-network
+
+- name: overwrite existing Algorand systemd service
+  template:
+    src: algorand.service
+    dest: /usr/lib/systemd/system/algorand.service
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  when: not common_data_directory and algorand_network != 'mainnet'
   tags: switch-network

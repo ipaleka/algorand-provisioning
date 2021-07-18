@@ -1,7 +1,7 @@
 ---
 - name: create config.json file if it doesn't exist
   copy:
-    src: "{{ node_data_directory }}config.json.example"
+    src: "{{ node_directory }}config.json.example"
     dest: "{{ node_data_directory }}config.json"
     remote_src: yes
     owner: "{{ goal_user }}"

@@ -43,32 +43,52 @@
   when: os_family not in ("Darwin", "Alpine")
   tags: algorand-node-setup, install-other
 
-- name: add Algorand environment variables exporting to admin user's .bash_profile
+- name: export ALGORAND_DATA variable in admin user's .bash_profile
   lineinfile:
     dest: "{{ admin_home_directory }}.bash_profile"
-    line: "{{ item }}"
+    regexp: "^export ALGORAND_DATA="
+    line: 'export ALGORAND_DATA="{{ node_data_directory }}"'
     state: present
     create: yes
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
     mode: 0644
-  with_items:
-    - 'export ALGORAND_DATA="{{ node_data_directory }}"'
-    - 'export PATH="{{ node_directory }}:$PATH"'
   when: os_family != "Darwin"
   tags: algorand-node-setup, install-other
 
-- name: add Algorand environment variables exporting to admin user's .zshrc
+- name: append Algorand node path to environment variable in admin user's .bash_profile
   lineinfile:
-    dest: "{{ admin_home_directory }}.zshrc"
-    line: "{{ item }}"
+    dest: "{{ admin_home_directory }}.bash_profile"
+    line: 'export PATH="{{ node_directory }}:$PATH"'
     state: present
     create: yes
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
     mode: 0644
-  with_items:
-    - 'export ALGORAND_DATA="{{ node_data_directory }}"'
-    - 'export PATH="{{ node_directory }}:$PATH"'
+  when: os_family != "Darwin"
+  tags: algorand-node-setup, install-other
+
+- name: export ALGORAND_DATA variable in admin user's .zshrc
+  lineinfile:
+    dest: "{{ admin_home_directory }}.zshrc"
+    regexp: "^export ALGORAND_DATA="
+    line: 'export ALGORAND_DATA="{{ node_data_directory }}"'
+    state: present
+    create: yes
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
+  when: os_family == "Darwin"
+  tags: algorand-node-setup, install-other
+
+- name: append Algorand node path to environment variable in admin user's .zshrc
+  lineinfile:
+    dest: "{{ admin_home_directory }}.zshrc"
+    line: 'export PATH="{{ node_directory }}:$PATH"'
+    state: present
+    create: yes
+    owner: "{{ admin_user }}"
+    group: "{{ admin_user_group }}"
+    mode: 0644
   when: os_family == "Darwin"
   tags: algorand-node-setup, install-other

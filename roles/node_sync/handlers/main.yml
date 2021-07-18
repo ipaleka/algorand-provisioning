@@ -1,7 +1,7 @@
 ---
 - name: read the latest checkpoint file content
   ansible.builtin.slurp:
-    src: "{{ node_directory }}latest.catchpoint"
+    src: "{{ node_directory }}{{ algorand_network }}-latest.catchpoint"
   register: latest_catchpoint_file
   listen: "catchpoint downloaded"
 
