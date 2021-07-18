@@ -1,36 +1,7 @@
 ---
 # SETUP
-- name: check if admin_user can connect
-  hosts: all:!windows:!macos
-  gather_facts: false
-  vars:
-    ansible_user: "{{ admin_user }}"
-  tasks:
-    - name: ping as admin_user
-      ping:
-      ignore_unreachable: true
-      ignore_errors: true
-      changed_when: false
-      register: admin_user_ping
-
-    - name: change user to superuser if admin_user can't connect
-      when: admin_user_ping.unreachable is defined
-      connection: local
-      set_fact:
-        ansible_user: "{{ superuser if superuser is defined else 'root' }}"
-
-- name: setup OS requirements and information
-  hosts: all
-  remote_user: "{{ admin_user }}"
-  roles:
-     - role: distro_checks
-
-- name: create admin_user
-  hosts: all:!windows:!macos
-  remote_user: "{{ superuser if superuser is defined else 'root' }}"
-  roles:
-    - role: create_user
-      when: admin_user_ping.unreachable is defined
+- name: setup user and distro information
+  import_playbook: setup_playbook.yml
 
 # INSTALL NODE AND SERVICE
 - name: install using package manager
