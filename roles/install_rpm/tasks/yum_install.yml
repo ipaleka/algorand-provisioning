@@ -1,4 +1,12 @@
 ---
+- name: install system dependencies for Algorand node
+  yum:
+    name: dnf-automatic
+    state: present
+  become: yes
+  when: os_distribution == "CentOS" and os_version is version("7", ">")
+  tags: algorand-node-setup
+
 - name: add Algorand YUM repository
   ansible.builtin.yum_repository:
     name: algorand
