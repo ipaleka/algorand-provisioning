@@ -78,7 +78,7 @@
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
     mode: 0644
-  when: os_family == "Darwin"
+  when: os_family == "Darwin" and not os_version is version("10.15", "<")
   tags: algorand-node-setup, install-other
 
 - name: append Algorand node path to environment variable in admin user's .zshrc
@@ -90,5 +90,5 @@
     owner: "{{ admin_user }}"
     group: "{{ admin_user_group }}"
     mode: 0644
-  when: os_family == "Darwin"
+  when: os_family == "Darwin" and not os_version is version("10.15", "<")
   tags: algorand-node-setup, install-other
