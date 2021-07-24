@@ -40,4 +40,4 @@
     - role: node_sync
       when: fast_catchup
     - role: telemetry
-      when: os_family != "Windows"
+      when: os_family not in ("Darwin", "Windows")

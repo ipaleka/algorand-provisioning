@@ -48,14 +48,19 @@
   become: yes
   tags: create-user
 
+- name: check for local public key file
+  stat:
+    path: "{{ local_path_to_public_key }}"
+  delegate_to: localhost
+  register: public_key_file
+  tags: create-user
+
 - name: set up authorized keys for the user
   authorized_key:
     user: "{{ admin_user }}"
-    key: "{{ item }}"
+    key: "{{ lookup('file', local_path_to_public_key) }}"
   become: yes
   become_user: "{{ admin_user }}"
-  with_file:
-    - "{{ local_path_to_public_key }}"
   tags: create-user
 
 - name: set created admin_user as ansible_user

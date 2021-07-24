@@ -2,3 +2,4 @@
 *.code-workspace
 /hosts
 /hosts.yaml
+/venv

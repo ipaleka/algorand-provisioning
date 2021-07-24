@@ -19,6 +19,12 @@ It allows CI/CD process for your applications based on the Algorand blockchain. 
 
 Python has to be installed on the host machine(s).
 
+The developer tools should be installed on a Mac OS by issuing:
+
+```bash
+sudo xcode-select --install
+```
+
 
 # Configuration
 

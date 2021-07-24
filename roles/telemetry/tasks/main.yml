@@ -7,6 +7,12 @@
   when: not updater_install
   tags: telemetry
 
+- name: wait until logging configuration file is present in admin home directory
+  wait_for:
+    path: "{{ admin_home_directory }}.algorand/logging.config"
+  when: updater_install
+  tags: telemetry
+
 - name: read the logging configuration file content for updater
   ansible.builtin.slurp:
     src: "{{ admin_home_directory }}.algorand/logging.config"
