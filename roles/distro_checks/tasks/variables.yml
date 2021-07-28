@@ -40,9 +40,7 @@
 
 - name: set variable indicating should updater be used for node installing
   set_fact:
-    updater_install: '{{ not use_package_manager or not (os_family in ("Debian", ) or (os_distribution == "CentOS" and os_version is version("8", "<"))) }}'
-    # FIXME https://github.com/algorand/go-algorand/issues/1489#issuecomment-875033099
-    # updater_install: '{{ not use_package_manager or not os_family in ("Debian", "RedHat", "Suse") }}'
+    updater_install: '{{ not use_package_manager or not os_family in ("Debian", "RedHat") }}'
   tags: distro-checks, variables
 
 - name: change node data directory if applicable

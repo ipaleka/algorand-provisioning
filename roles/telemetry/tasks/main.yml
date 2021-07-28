@@ -1,10 +1,18 @@
 ---
 - name: read the logging configuration file content for package manager
   ansible.builtin.slurp:
-    src: "{{ node_directory }}.algorand/logging.config"
+    src: "{{ node_directory }}logging.config"
   become: yes
   register: logging_configuration_package_manager
-  when: not updater_install
+  when: not updater_install and os_family == "Debian"
+  tags: telemetry
+
+- name: read the logging configuration file content for package manager
+  ansible.builtin.slurp:
+    src: "{{ node_data_directory }}logging.config"
+  become: yes
+  register: logging_configuration_package_manager
+  when: not updater_install and os_family == "RedHat"
   tags: telemetry
 
 - name: wait until logging configuration file is present in admin home directory

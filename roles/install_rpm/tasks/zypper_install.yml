@@ -1,9 +1,12 @@
 ---
 - name: install system dependencies for Algorand node
   zypper:
-    name: dnf-automatic
+    name: "{{ item }}"
     state: present
   become: yes
+  with_items:
+    - dnf-automatic
+    - shadow-utils  # won't install
   tags: algorand-node-setup
 
 - name: add Algorand Zypper repository
