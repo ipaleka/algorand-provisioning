@@ -19,6 +19,12 @@
   when: os_family != "Windows"
   listen: "catchpoint downloaded"
 
+- name: wait until algod.net is present in the node data directory
+  win_wait_for:
+    path: "{{ node_data_directory }}{{ algorand_network_base }}\\algod.net"
+  when: os_family == "Windows"
+  listen: "catchpoint downloaded"
+
 - name: catchup node using the latest checkpoint value
   win_command: "{{ goal_executable }} node catchup {{ latest_catchpoint }} -d {{ node_data_directory }}{{ algorand_network_base }}"
   args:
