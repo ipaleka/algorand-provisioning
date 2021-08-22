@@ -210,7 +210,7 @@ The playbook has been tested on the following platforms:
 - Mac OS X 10.15.7 (Catalina)
 - Microsoft Windows 10 20H2
 
-If you've encountered a bug or need an implementation for some other distribution, feel free to create [an issue](https://github.com/ipaleka/algorand-provisioning/issues). If you are going to provide your playbook's output, please use the `-vv` or `-vvvv` argument to increase verbosity:
+If you've encountered a bug or need an implementation for some other distribution, feel free to create [an issue](https://github.com/algodjango/provisioning/issues). If you are going to provide your playbook's output, please use the `-vv` or `-vvvv` argument to increase verbosity:
 
 ```bash
 ansible-playbook -vv -i hosts node_playbook.yml
